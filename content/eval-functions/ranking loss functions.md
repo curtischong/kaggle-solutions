@@ -1,0 +1,25 @@
+- https://gombru.github.io/2019/04/03/ranking_loss/
+- **the objective of Ranking Losses is to predict relative distances between inputs**.
+	- This task if often called **metric learning**.
+- How to use ranking losses?
+	- our model needs to output a similarity score between two datapoints
+		- this score can be binary (similar / dissimilar)
+		- we only care about the similarity score (distance), the absolute value isn't needed
+	- two main setups:
+		- When we use **pairs of training data** points OR
+		- **triplets of training data** points.
+- **Pairwise ranking loss**
+	- $$L = \begin{cases} d(r_a,r_p) & \text{if Positive Pair} \\ \max(0,m - d(r_a,r_n)) & \text{if Negative Pair} \end{cases}$$
+	- ![[Pasted image 20240119204953 1.png]]
+	- [[HingeLoss]]
+- **Triplet Ranking Loss**
+	- This works better than pairwise ranking loss:
+		- **The objective is that the distance between the anchor sample and the negative sample representations $d(r_a, r_n)$ is greater (and bigger than a margin m) than the distance between the anchor and positive representations $d(r_a, r_p)$**.
+	- in his research, he found that triplet ranking loss worked better to teach the model multimodal representations of data
+		- e.g. given an image, caption it.
+			- the CNN needs create image embeddings that is close to the GloVe embeddings
+				- this works better than standard **Cross-Entropy Loss**
+		- ![[Pasted image 20240119204909.png]]
+		- "To choose the negative text, we explored different online **negative mining strategies, using the distances in the GloVe space with the positive text embedding**"
+			- this was smart because the negative mining examples will have a close embedding with the positive examples
+- To choose good triplets, see [[triplet mining]]
