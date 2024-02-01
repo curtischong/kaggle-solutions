@@ -1,7 +1,11 @@
 **Link:** https://www.kaggle.com/c/child-mind-institute-detect-sleep-states
+
 **Problem Type:** 
+
 **Input:** wrist accelerometer data
+
 **Output:** the times when a user wakes up AND the times when a user sleeps
+
 **Eval Metric:** [[Average Precision]]
 - https://www.kaggle.com/code/metric/event-detection-ap/notebook
 - note: from (1st)'s solution, they say that:

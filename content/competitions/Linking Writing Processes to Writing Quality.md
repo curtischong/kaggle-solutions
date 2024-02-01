@@ -1,7 +1,11 @@
 **Link:** https://www.kaggle.com/competitions/linking-writing-processes-to-writing-quality
+
 **Problem Type:** [[multi-class classification]] [[NLP]]
+
 **Input:** Time series data of keystroke info. All alphanumeric characters were replaced with `q` so you couldn't decipher the original essay text
+
 **Output:** A score from [0, 6] (integer, incrementing in 0.5) of the resulting essay
+
 **Eval Metric:** [[RMSE]]
 ## Summary
 - Given only keystroke information, predict a student's essay score

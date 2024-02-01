@@ -1,7 +1,11 @@
 **Link:** https://www.kaggle.com/c/predict-ai-model-runtime
+
 **Problem Type:** [[learning to rank]]
+
 **Input:** 
+
 **Output:** 
+
 **Eval Metric:** [[Kendall Tau correlation]] AND custom metric for the top-k predictions
 ## Summary
 - The goal is to predict the runtime of an AI model based on its characteristics, such as the number of parameters/the number of layers/hardware configuration.

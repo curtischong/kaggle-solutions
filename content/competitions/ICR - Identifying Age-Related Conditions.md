@@ -1,10 +1,14 @@
 **Link:** https://www.kaggle.com/c/icr-identify-age-related-conditions
+
 **Problem Type:** [[binary classification]]
+
 **Input:** 
 - `AB`-`GL` Fifty-six anonymized health characteristics. All are numeric except for `EJ`, which is categorical.
+
 **Output:** predict if a person has any of three medical conditions (class 1) or not (class 0)
 - Note: the Supplemental metadata has `B`, `D`, `G` The three age-related conditions. Correspond to class `1`.
 	- NOTE: (1st) did not use this (since it isn't available for the test set)
+
 **Eval Metric:** 
 - The submitted probabilities for a given row are not required to sum to one because they are rescaled prior to being scored (each row is divided by the row sum)
 	- since we're predicting class 0 and class 1, and it's rebalanced, this is just a binary classification

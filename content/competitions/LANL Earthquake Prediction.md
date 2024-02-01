@@ -1,9 +1,13 @@
 **Link:** https://www.kaggle.com/c/LANL-Earthquake-Prediction
+
 **Problem Type:** [[regression]], [[signal processing]]
+
 **Input:** the acoustic data (the shaky line that is draw by seismometers)
+
 **Output:** the time (in seconds) until the next laboratory earthquake
 - "We define large failure events as times for which stress drop exceeds 0.05 MPa within 1 ms."
 	- https://www.kaggle.com/c/LANL-Earthquake-Prediction/discussion/90664#latest-535844
+
 **Eval Metric:** [[Mean absolute error (MAE)]]
 ## Summary
 - This was a competition with a high leaderboard shakeup because ppl overfit the public LB

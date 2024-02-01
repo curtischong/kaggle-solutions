@@ -1,8 +1,12 @@
 **Link:** https://www.kaggle.com/c/g-research-crypto-forecasting
+
 **Problem Type:** [[Time Series]]
+
 **Input:** the price, volume, OHLC and num trades in that time interval (a minute)
 - NOTE: you do not get the candlestick charts. You only get aggregate time series data for each minute
+
 **Output:** 15 minute residualized returns
+
 **Eval Metric:**
 Your (forecasted returns) - (actual market returns)
 - here the returns are logged

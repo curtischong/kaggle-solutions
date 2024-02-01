@@ -1,5 +1,7 @@
 **Link:** https://www.kaggle.com/c/cafa-5-protein-function-prediction
+
 **Problem Type:** [[Multi-label Classification]] [[hierarchical label classification]]
+
 **Input:**
 - 1) The fasta files for proteins (aka the amino acids that make it up) AND the corresponding GO terms this protein is related with
 	- For each GO term, we also learn its aspect:
@@ -13,7 +15,6 @@
 		- some GOs are leaves.
 		- biologically, if a cell has a GO, then it also has the GO of all it's parent GOs up until the root of the tree (either MP, BP, or CC)
 	- a GO can have multiple parents, so it's a DAG, not a tree
-
 
 **Output:** for each protein, return a **set** of **(GO term ID, probability)** for it.
 - A GO term is a protein's function. By returning the set of GO term IDs for the protein, you are saying: "this protein does these set of functions"

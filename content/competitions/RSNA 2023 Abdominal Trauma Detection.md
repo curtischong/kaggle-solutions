@@ -1,18 +1,22 @@
 **Link:** https://www.kaggle.com/c/rsna-2023-abdominal-trauma-detection/overview
+
 **Problem Type:** 
+
 **Input:** 3D CT scans
+
 **Output:** a probability for each of the different possible injury types:
 - bowel_healthy,bowel_injury,extravasation_healthy,extravasation_injury,kidney_healthy,kidney_low,kidney_high,liver_healthy,liver_low,liver_high,spleen_healthy,spleen_low,spleen_high
 
 **Eval Metric:** 
 average of the sample weighted: [[log loss]]
 - https://www.kaggle.com/code/metric/rsna-trauma-metric/notebook
-##### Summary
+## Summary
 - this is one of the biggest datasets I've seen. almost half a Terabyte of data
 	- smaller version of it is here: https://www.kaggle.com/competitions/rsna-2023-abdominal-trauma-detection/discussion/427427
 
-##### Solutions
-- (1st)
+## Important notebooks/discussions
+## Solutions
+- ### (1st)
 	- https://www.kaggle.com/competitions/rsna-2023-abdominal-trauma-detection/discussion/447449
 		- solution code:
 			- inference: https://www.kaggle.com/nischaydnk/rsna-super-mega-lb-ensemble
@@ -41,7 +45,7 @@ average of the sample weighted: [[log loss]]
 			- A.HorizontalFlip(p=0.5),
 			- A.VerticalFlip(p=0.5),
 			- A.Rotate(p=0.5, limit=(-25, 25)),
-- (2nd)
+- ### (2nd)
 	- https://www.kaggle.com/competitions/rsna-2023-abdominal-trauma-detection/discussion/447453
 	- solution code:
 		- Inference: https://www.kaggle.com/code/theoviel/rsna-abdominal-inf
@@ -49,7 +53,7 @@ average of the sample weighted: [[log loss]]
 	- [[GRU head (neck) after the backbone layer]]
 		- "1. RNN only sees probabilities precomputed by the CNN, so training is done in 2 stages."
 	- didn't do anything to address the data imbalance. the models handled it well
-- (3rd)
+- ### (3rd)
 	- https://www.kaggle.com/competitions/rsna-2023-abdominal-trauma-detection/discussion/447464
 		- Crop: Since information around the organs is essential for trauma detection, the mask was slightly enlarged before the boxes were cut out. Two patterns of mask sizes were employed and two datasets were created for each organ.
 		- The following are those that have made a particularly significant contribution to accuracy:  
@@ -57,10 +61,7 @@ average of the sample weighted: [[log loss]]
 			- custom sampler for all class models
 				- "Since each organ has a different size, the appropriate image size and number of images should be different. Therefore, I used a custom sampler to ensure that only boxes of the same organ are included in the same batch. (If batch_size is 4, for example, 4 liver boxes will be included in one batch.)"
 			- 2types of crops
-
-##### Important notebooks/discussions
-
-#### Takeaways
+## Takeaways
 - It's hard to build an end-to-end model that predicts the target classes.
 	- so ppl built models to identify organs via image segmentation, then derive the target classes from that
 	- tbh. large models + more data will prob eliminate this intermediate step

@@ -1,11 +1,15 @@
 **Link:** https://www.kaggle.com/c/mlb-player-digital-engagement-forecasting
+
 **Problem Type:** [[Time Series]]
+
 **Input:** game statistics for the current day
+
 **Output:** a prediction of how engaged fans are with a specific player after a game
 - there are 4 target columns, each representing the engagement level fans have with that player
 - we are predicting the engagement levels 1 day after the game (i.e. 1 day after the x_train data)
 	- however, during the evaluation period, "The test data arrives in a data frame identical in format to **train.csv**, except it does not contain the target values."
 	- so even though you got those engagement levels, you can't use today's engagement level to predict tomorrow's engagement level. Since you don't know what today's engagement level is!
+
 **Eval Metric:** [[mean column-wise mean absolute error (MCMAE)]]
 ## Summary
 - Note: 

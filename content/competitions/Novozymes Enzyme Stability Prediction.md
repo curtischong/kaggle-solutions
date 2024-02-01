@@ -1,10 +1,13 @@
 **Link:** https://www.kaggle.com/c/novozymes-enzyme-stability-prediction
+
 **Problem Type:** [[ordering objects in list]]
+
 **Input:** 
 - you also get alphafold2 predictions (wildtype) of the enzyme variants
 	- these variants are found via "point amino acid mutation and deletion"
 		- This is why they are called mutations
 	- you can see how the mutations were made in this notebook: https://www.kaggle.com/code/gehallak/nesp-3d-geometry-0-32-lb
+
 **Output:** the predicted rank thermal stability of enzyme variants
 - officially, you want to output n tuples (seq_id, tm) - tm is the melting temperature of the enzyme
 	- Higher **`tm`** means the protein variant is more stable.
@@ -12,7 +15,7 @@
 	- Basically, **the tm value that you predict is just used to order your predictions** (before running spearman's correlation coefficient with the t_true)
 
 **Eval Metric:** [[Spearman's correlation Coefficient]]
-##### Summary
+## Summary
 - Enzymes are proteins that act as catalysts in the chemical reactions of living organisms.
 - Novozymes finds enzymes in nature and optimizes them for use in industry.
 - why do they care about the tm levels?
@@ -22,8 +25,40 @@
 	- "residue" are amino acids and nucleic acids
 
 - Note: there were training data issues: https://www.kaggle.com/competitions/novozymes-enzyme-stability-prediction/discussion/356251
-##### Solutions
-- (1st) Protein as a Graph
+## Important notebooks/discussions
+- #### EDA and explaining what this competition is
+	- https://www.kaggle.com/code/dschettler8845/novo-esp-eda-baseline
+	- The frequency of some amino acids respective to the length of the AA sequence has a low, but non-zero correlation with the target tm�� (melting point)
+    - The fractional frequency appears slightly more informative
+	- Some amino acid sequences are REALLY long... especially considering all of our test AA sequences are relatively short ~240 vs more than 32,000
+	- While some amino acids are more common than others, all are relatively common (Sequences on average contain 1.5% to 10% of each amino acid respectively).
+	- ph is from **0.0-11.0**
+	- there is a negative tm (target) value. why?
+- #### highest public kernel before the contest end
+	- https://www.kaggle.com/code/seyered/eda-novozymes-enzyme-stability
+	- He basically used a bunch of techniques from many different papers
+		- these techniques tended to look at the sequence of the acid to predict the tm
+		- then he ensembled the tm predictions of the techniques using this
+			- code
+				```python
+				 Global ensemble:
+				testDf['tm'] = (
+				    4 * rank_nrom('rosetta') + 2*rank_nrom('rmsd') + 2*rank_nrom('thermonet') + 2*rank_nrom('plddtdiff') +\
+				    rank_nrom('sasaf') + rank_nrom('plddt') + rank_nrom('demask') + rank_nrom('ddG') + rank_nrom('blosum')
+				) / 14
+				```
+		- the way he found the coefficients in the ensemble is by increasing 1 to the weight until it led to a lower public score
+			- yep they were definitely overfitting.
+	- interesting to note: ppl said that CV and the public LB were unstable
+- #### Difference features
+	- https://www.kaggle.com/code/cdeotte/difference-features-lb-0-600
+		- PDB files are protein data bank files. they describe the three-dimensional structures of molecules
+		- he took a dataset of PDB files to make features
+- #### Showing that there is a high correlation between the distance between the mutation's (xyz) and the enzyme's center (xyz)
+	- https://www.kaggle.com/code/gehallak/nesp-3d-geometry-0-32-lb
+		- by using the sole feature mutation coord - enzyme center coord as the predicted value of `tm`, he got a public score of **0.32**
+## Solutions
+- ### (1st) Protein as a Graph
 	- https://www.kaggle.com/competitions/novozymes-enzyme-stability-prediction/discussion/376371
 	- "there was a big shakeup, so this isn't the best solution"
 	- Nodes represent residues, and if two residues are closer than a certain distance, the nodes are connected by edges.
@@ -41,39 +76,7 @@
 				- `u, v = np.nonzero(adj)`
 			- 3)
 		- uses https://www.dgl.ai/
-	- I don't understand what they mean when they say that htey are using a [[graph isomorphism network]].
+	- I don't understand what they mean when they say that they are using a [[graph isomorphism network]].
 		- are they comparing the mutation of the enzyme to the original enzyme, and using the original enzyme as a reference for the mutation, so that the tm value is just an offset of the tm of the original enzyme?
 		- I guess training an IGN outputs an embedding that represents the graph. now that they have an embedding, they can use it as a feature vector for downstream models
-##### Important notebooks/discussions
-- EDA and explaining what this competition is
-	- https://www.kaggle.com/code/dschettler8845/novo-esp-eda-baseline
-	- The frequency of some amino acids respective to the length of the AA sequence has a low, but non-zero correlation with the target tm�� (melting point)
-    - The fractional frequency appears slightly more informative
-	- Some amino acid sequences are REALLY long... especially considering all of our test AA sequences are relatively short ~240 vs more than 32,000
-	- While some amino acids are more common than others, all are relatively common (Sequences on average contain 1.5% to 10% of each amino acid respectively).
-	- ph is from **0.0-11.0**
-	- there is a negative tm (target) value. why?
-- highest public kernel before the contest end
-	- https://www.kaggle.com/code/seyered/eda-novozymes-enzyme-stability
-	- He basically used a bunch of techniques from many different papers
-		- these techniques tended to look at the sequence of the acid to predict the tm
-		- then he ensembled the tm predictions of the techniques using this
-			- code
-				```python
-				 Global ensemble:
-				testDf['tm'] = (
-				    4 * rank_nrom('rosetta') + 2*rank_nrom('rmsd') + 2*rank_nrom('thermonet') + 2*rank_nrom('plddtdiff') +\
-				    rank_nrom('sasaf') + rank_nrom('plddt') + rank_nrom('demask') + rank_nrom('ddG') + rank_nrom('blosum')
-				) / 14
-				```
-		- the way he found the coefficients in the ensemble is by increasing 1 to the weight until it led to a lower public score
-			- yep they were definitely overfitting.
-	- interesting to note: ppl said that CV and the public LB were unstable
-- Difference features
-	- https://www.kaggle.com/code/cdeotte/difference-features-lb-0-600
-		- PDB files are protein data bank files. they describe the three-dimensional structures of molecules
-		- he took a dataset of PDB files to make features
-- Showing that there is a high correlation between the distance between the mutation's (xyz) and the enzyme's center (xyz)
-	- https://www.kaggle.com/code/gehallak/nesp-3d-geometry-0-32-lb
-		- by using the sole feature mutation coord - enzyme center coord as the predicted value of `tm`, he got a public score of **0.32**
-#### Takeaways
+## Takeaways

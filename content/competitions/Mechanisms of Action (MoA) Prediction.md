@@ -1,8 +1,12 @@
-Link: https://www.kaggle.com/c/lish-moa
-Problem Type: 
-Input: 
-Output: 
-Eval Metric: 
+**Link:** https://www.kaggle.com/c/lish-moa
+
+**Problem Type:** 
+
+**Input:** 
+
+**Output:** 
+
+**Eval Metric:** 
 ## Summary
 
 ## Important notebooks/discussions

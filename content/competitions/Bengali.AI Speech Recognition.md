@@ -1,7 +1,11 @@
 **Link:** https://www.kaggle.com/c/bengaliai-speech/overview
+
 **Problem Type:** [[transcription]]
+
 **Input:** mp3 files
+
 **Output:** the transcribed Bengali text
+
 **Eval Metric:** [[Word Error Rate]]
 ## Summary
 

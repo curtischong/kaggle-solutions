@@ -1,7 +1,7 @@
 ---
 title: Kaggle Solutions
 ---
-
+Here are the notes to: [[All Competitions]]
 ### The Goal:
 - To identify ALL the techniques used by the best teams
 - Why? Because knowing these tips helps you build intuition on what to do. It makes you better

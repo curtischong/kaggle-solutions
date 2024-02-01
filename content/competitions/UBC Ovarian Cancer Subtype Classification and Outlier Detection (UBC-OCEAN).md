@@ -1,12 +1,16 @@
 **Link**: https://www.kaggle.com/c/UBC-OCEAN
+
 **Problem Type:** [[Image Classification]] [[Unknown Class Classification]] [[Multiple Instance Learning]]
+
 **Input:**
 - medical images of the tissue (Whole Slide Images)
 - And image masks for the tumor, healthy tissue, and dying tissue
+
 **Output:** The class you think the instance belongs to
 - You don't output a probability (only a class. so you need to decide on a threshold)
+
 **Eval Metric:** [[Balanced Accuracy]]
-##### Summary
+## Summary
 Given a medical image scan, predict one of these [subtypes of ovarian cancer](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2592352/): `CC, EC, HGSC, LGSC, MC, Other`. The `Other` class is not present in the training set; identifying outliers is one of the challenges of this competition.
 
 There are two different types of data: TMA and WSI (much larger)
@@ -17,8 +21,8 @@ https://www.kaggle.com/competitions/UBC-OCEAN/discussion/455890
 - minor data cleaning issues. the color of the masks has a mix of red/green/blue after the img was resized. Basically, treat nonzero values as masks
 - Important: An area marked as a tumor doesn’t imply it’s the sole tumor area in the slide: https://www.kaggle.com/competitions/UBC-OCEAN/discussion/455890#2529071
 
-##### Solutions
-- (1st) Used phikon to extract features, then submit an ensemble of chowder models ([[Multiple Instance Learning]])
+## Solutions
+- ### (1st) Used phikon to extract features, then submit an ensemble of chowder models ([[Multiple Instance Learning]])
 	- https://www.kaggle.com/competitions/UBC-OCEAN/discussion/466455
 	- They used https://huggingface.co/owkin/phikon, a foundational model for digital pathology
 		- [Chowder](https://arxiv.org/pdf/1802.02212.pdf) - a Multiple Instance Learning (MIL) model - is still on par with more recent MIL models (e.g. [TransMIL](https://arxiv.org/abs/2106.00908), [DTFD-MIL](https://arxiv.org/abs/2203.12081))
@@ -87,7 +91,7 @@ https://www.kaggle.com/competitions/UBC-OCEAN/discussion/455890
 			- 3) Since the features of TMA were mixed in with the features of WSI, they proved their model generalized well to different dimensions
 		- Data quality issues:
 			- some images were not of the correct scale. They had to count how many pixels each red blood cell was (win width) to properly scale the training data
-- (2nd) use a feature extractor (unspecified) to train [[Multiple Instance Learning]] models
+- ### (2nd) use a feature extractor (unspecified) to train [[Multiple Instance Learning]] models
 	- https://www.kaggle.com/competitions/UBC-OCEAN/discussion/465410
 	- They used external data, which also had more classes. but it didn't improve scores
 		- cause there were significant differences from competition data
@@ -117,8 +121,8 @@ https://www.kaggle.com/competitions/UBC-OCEAN/discussion/455890
 		- the R_ratio variable determines what percentage of patches to retain
 	- implementation detaills for training: https://www.kaggle.com/code/zznznb/wsi-train
 		- NystromAttention
-			-  # pad so that sequence can be evenly divided into m landmarks - landmarks are specific to this type of attention: https://jaketae.github.io/study/nystrom-approximation/
-- (3rd) Used Lunit-DINO to extract features, then train on CLAM. Relied heavily on external data sources to prevent overfitting
+			- pad so that sequence can be evenly divided into m landmarks - landmarks are specific to this type of attention: https://jaketae.github.io/study/nystrom-approximation/
+- ### (3rd) Used Lunit-DINO to extract features, then train on CLAM. Relied heavily on external data sources to prevent overfitting
 	- https://www.kaggle.com/competitions/UBC-OCEAN/discussion/465527
 	- they generated some "Other" synthetic images by cropping small tiles that were marked as healthy or as stroma.
 	- used a **pretrained model Lunit-DINO to extract smaller size features** that he could make a prediction on
@@ -134,8 +138,7 @@ https://www.kaggle.com/competitions/UBC-OCEAN/discussion/455890
 			- this only seems ok if the same patient wasn't in the test fold. I assume he means that "all of patent's images" are in the same fold
 				- cause if it was in the test fold, the model just needs to identify if it has seen that patent before
 		- Later I excluded the data from the Harmanreh lab completely for validation which lead to much more reliable cross-validation scores. [[Identify poor data sources]]
-	- 
-- (4th) Use the mask to identify cancerous areas, and train on a small and resized 768x768 pixels (very efficient)
+- ### (4th) Use the mask to identify cancerous areas, and train on a small and resized 768x768 pixels (very efficient)
 	- https://www.kaggle.com/competitions/UBC-OCEAN/discussion/465811
 	- TMA images are centre cropped (eg. 3000 -> 2500) and resized to 768x768 pixels.
 	- Since the WSI images are larger, he used the thumbnail images to:
@@ -155,7 +158,7 @@ https://www.kaggle.com/competitions/UBC-OCEAN/discussion/455890
 	- To predict the "other" class, he:
 		- 1) finds the predicted class with the highest probability
 		- 2) if this probability is < 10%. it's labelled as other.
-- (5th) Did NOT use MIL
+- ### (5th) Did NOT use MIL
 	- https://www.kaggle.com/competitions/UBC-OCEAN/discussion/466017
 	- when doing inferencing, they used a tile selection model (only trained on WSI)
 		- then a classification model (WSI and TMA)
@@ -187,7 +190,7 @@ https://www.kaggle.com/competitions/UBC-OCEAN/discussion/455890
 		- for WSI images, only the top-5 confidence tiles are selected for classification
 			- for TMS, no selection needed
 	- stain normalization: [https://github.com/EIDOSLAB/torchstain](https://github.com/EIDOSLAB/torchstain)
-#### Takeaways
+## Takeaways
 - The first place solution was far ahead of others. I think using [[entropy]] to identify the "other" class was a differentiator
 - The top three all used feature extractors, rather than just treating it as a plain img classification problem
 - If you wanted to be efficient, you had to run one model to identify interesting tiles, then another model to classify that tile.

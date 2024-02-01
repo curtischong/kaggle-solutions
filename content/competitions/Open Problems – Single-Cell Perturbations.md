@@ -1,15 +1,19 @@
-Link: https://www.kaggle.com/competitions/open-problems-single-cell-perturbations
-Problem Type: 
-Input: cell types and small molecule names
-Output: A 18,211 dim vector for each row. These are the probabilities that the molecule (sm_name) will affect each of the **18,211 gene's** expression when applied to this cell_type.
-Eval Metric: [[Mean Rowwise Root Mean Squared Error]]
-##### Summary
+**Link:** https://www.kaggle.com/competitions/open-problems-single-cell-perturbations
+
+**Problem Type:** 
+
+**Input:** cell types and small molecule names
+
+**Output:** A 18,211 dim vector for each row. These are the probabilities that the molecule (sm_name) will affect each of the **18,211 gene's** expression when applied to this cell_type.
+
+**Eval Metric:** [[Mean Rowwise Root Mean Squared Error]]
+## Summary
 This is basically a regression problem with 2 feature columns and 18211 targets
 
 Note: an estimated 35% of the training data is erroneous: https://www.kaggle.com/code/jalilnourisa/post-eda
 - This could affect the validity of techniques used in this competition
-##### Solutions
-- (1st) ChemBERTa
+## Solutions
+- ### (1st) ChemBERTa
 	- https://www.kaggle.com/competitions/open-problems-single-cell-perturbations/discussion/459258
 	- generated features by embedding the description of the cell
 		- but these text embeddings decreased his score.
@@ -39,7 +43,7 @@ Note: an estimated 35% of the training data is erroneous: https://www.kaggle.com
 			- 2) there is a biological disorder in the cell, but we still expect it to respond to the drug in the same way
 		- this feels like [[dropout]]
 		- NOTE: significant training data qualities could mean this technique isn't valid
-- (2nd) [[target encoding]]
+- ### (2nd) [[target encoding]]
 	- https://www.kaggle.com/competitions/open-problems-single-cell-perturbations/discussion/458738
 	- Their main source of features were **de_train.parquet** (which is just the Differential expression value for each gene)
 			- https://github.com/Eliorkalfon/single_cell_pb/blob/main/utils.py#L67
@@ -74,7 +78,7 @@ Note: an estimated 35% of the training data is erroneous: https://www.kaggle.com
 		- used L2 loss
 		- Implemented gradient norm clipping with a maximum norm of 1.
 	- Their code on github is REALLY short and easy to read!
-- (3rd) 2-stage prediction. 1: create pseudolables 2: final prediction
+- ### (3rd) 2-stage prediction. 1: create pseudolables 2: final prediction
 	- https://www.kaggle.com/competitions/open-problems-single-cell-perturbations/discussion/458750
 	- the sm_name column maps one-to-one with the SMILES column. So he dropped the sm_name column
 		- he tried using a neural network on the SMILES column but failed.
@@ -119,7 +123,7 @@ Note: an estimated 35% of the training data is erroneous: https://www.kaggle.com
 		- a training on selected easy / hard to predict columns
 		- a huber loss.
 	- huber loss didn't work!!! Also outlier removal!
-- (4th)
+- ### (4th) good CV + feature engineering
 	- https://www.kaggle.com/competitions/open-problems-single-cell-perturbations/discussion/460191
 		- code: https://github.com/paralyzed2023/4st-place-solution-single-cell-pbs.git
 	- cross validation:
@@ -161,7 +165,7 @@ Note: an estimated 35% of the training data is erroneous: https://www.kaggle.com
 					- which is why they only assigned 5% of their ensemble to this
 			- I should check to see if they are using the variational autoencoder, or just the standard one in the notebook
 	- Normalization of target data DID NOT WORK
-#### Takeaways
+## Takeaways
 - This was a biological problem that can be abstracted way into important feature selection
 	- after feature selection, you just needed simple models to get the prediction
 - 1) using ChemBERTa is important. it gets you very far

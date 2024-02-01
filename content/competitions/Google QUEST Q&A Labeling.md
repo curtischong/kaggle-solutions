@@ -1,9 +1,13 @@
 **Link:** https://www.kaggle.com/competitions/google-quest-challenge
+
 **Problem Type:** [[learning to rank]]
+
 **Input:** each row contains a question, and the answer to it (on a Q&A site)
 - Note: multiple rows can come from the same question, we group by `question_body`
 	- but they are in different rows since there were more than one answer to the question
+
 **Output:** 
+
 **Eval Metric:** [[Spearman's correlation Coefficient]]
 - The goal is to see **how well your model can rank** Q&A forum posts based on these target columns:
 	- question_well_written
