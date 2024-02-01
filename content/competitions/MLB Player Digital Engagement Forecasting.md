@@ -7,19 +7,21 @@
 	- however, during the evaluation period, "The test data arrives in a data frame identical in format to **train.csv**, except it does not contain the target values."
 	- so even though you got those engagement levels, you can't use today's engagement level to predict tomorrow's engagement level. Since you don't know what today's engagement level is!
 **Eval Metric:** [[mean column-wise mean absolute error (MCMAE)]]
-##### Summary
-
+## Summary
 - Note: 
 	- Binary columns will have null values as well as zeroes. Zeroes will occur if a player had an opportunity to do something, but did not. Nulls will occur if a player never had the opportunity to do something
 		- e.g. a player who does not pitch on a given day cannot possibly pitch a shutout
 		- how did they solve this?
-Data issues:
-- https://www.kaggle.com/c/mlb-player-digital-engagement-forecasting/discussion/253940
-	- targets are capped at 100, but each player's target isn't divided equally
-	- target1 for player 425772 is divided by 663077, while target1 for player 425784 is divided by 1753059
-	- I don't completely understand this
-##### Solutions
-- (1st) lots of model testing, not much features
+- Data issues:
+	- https://www.kaggle.com/c/mlb-player-digital-engagement-forecasting/discussion/253940
+		- targets are capped at 100, but each player's target isn't divided equally
+		- target1 for player 425772 is divided by 663077, while target1 for player 425784 is divided by 1753059
+		- I don't completely understand this
+## Important notebooks/discussions
+- most popular eda
+	- https://www.kaggle.com/code/chumajin/eda-of-mlb-for-starter-english-ver
+## Solutions
+- ### (1st) Lots of model testing, not much features
 	- https://www.kaggle.com/competitions/mlb-player-digital-engagement-forecasting/discussion/274255
 	- solution code: https://www.kaggle.com/code/ph0921/mlb-final-1/notebook
 	- [[target scaling]] using log(x)
@@ -34,13 +36,13 @@ Data issues:
 	- [[Adam optimizer]] with [[decreasing learning rate]] start: 2e-3 end: 5e-4
 	- tried LSTM, CNNs or a transformer, but the GRU layer performed the best
 	- normalization methods (batch norm, layer norm,…) didn't work
-- (2nd) 1000 features engineered. [[lgbm]], [[xgboost]]
+- ### (2nd) 1000 features engineered. [[lgbm]], [[xgboost]]
 	- https://www.kaggle.com/competitions/mlb-player-digital-engagement-forecasting/discussion/274661
 	- cross validation: "We validated on the last month of data"
 	- [[hold-out cross validation]]
 	- [[target scaling]] using ($x^{1/4}$)
 	- [[lgbm]] with [[D.A.R.T]]
-- (3rd) 
+- ### (3rd) 
 	- https://www.kaggle.com/competitions/mlb-player-digital-engagement-forecasting/discussion/256620
 	- solution code:
 		- training: https://github.com/nyanp/mlb-player-digital-engagement  
@@ -49,19 +51,16 @@ Data issues:
 		- ![[Pasted image 20240126122316.png]]
 	- Debug code locally using the API emulator
 	    - Test the robustness of my inference pipeline by "dropout" some of the data returned by the emulator (like chaos engineering) - [[sanity check]]
-- (5th)
+- ### (5th)
 	- https://www.kaggle.com/competitions/mlb-player-digital-engagement-forecasting/discussion/271345
 	- Special matches (like a player's retirement match) should be removed from the data [[drop outliers]]
 		- e.g. Ichiro Suzuki got lots of engagement, despite doing poorly
 	- feature engineering
 		- made a submodel that predicts if a pitcher would pitch that day
-- (6th)
+- ### (6th)
 	- https://www.kaggle.com/competitions/mlb-player-digital-engagement-forecasting/discussion/271890
 	- Makabe's work
 		- derived many features from https://sabr.org/sabermetrics - stats about baseball
 	- [[encapsulate team's code in class]]
-##### Important notebooks/discussions
-- most popular eda
-	- https://www.kaggle.com/code/chumajin/eda-of-mlb-for-starter-english-ver
-#### Takeaways
+## Takeaways
 - lagged Features were very important (e.g. num pitches today - num pitches 30 days ago)

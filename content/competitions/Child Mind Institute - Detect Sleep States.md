@@ -1,21 +1,21 @@
-Link: https://www.kaggle.com/c/child-mind-institute-detect-sleep-states
-Problem Type: 
-Input: wrist accelerometer data
-Output: the times when a user wakes up AND the times when a user sleeps
-Eval Metric: [[Average Precision]]
+**Link:** https://www.kaggle.com/c/child-mind-institute-detect-sleep-states
+**Problem Type:** 
+**Input:** wrist accelerometer data
+**Output:** the times when a user wakes up AND the times when a user sleeps
+**Eval Metric:** [[Average Precision]]
 - https://www.kaggle.com/code/metric/event-detection-ap/notebook
 - note: from (1st)'s solution, they say that:
 	- The competition's evaluation metric doesn't differentiate predictions within a 30-second range from the ground truth event.
 	- so your prediction has a margin of error of 30seconds and it'll be correct
-##### Summary
+## Summary
 Detect sleep onset and wake from wrist-worn accelerometer data
 
 
 Note: if you submitted multiple predictions for the same sleep event, you'll get the same score (or better) ^ep8pd9
 - https://www.kaggle.com/competitions/child-mind-institute-detect-sleep-states/discussion/460516
 - competitors abused this bias to get a better score
-##### Solutions
-- (1st) - very smart postprocsessing to make fuzzy predictions precise
+## Solutions
+- ### (1st) - very smart postprocsessing to make fuzzy predictions precise
 	- https://www.kaggle.com/competitions/child-mind-institute-detect-sleep-states/discussion/459715
 	- solution code: https://github.com/sakami0000/child-mind-institute-detect-sleep-states-1st-place
 		- was based on this public notebook:
@@ -71,7 +71,7 @@ Note: if you submitted multiple predictions for the same sleep event, you'll get
 			- Main steps of the heuristic (to find the SPT-window (The Sleep Period Time window)):
 			- ![[Pasted image 20240114142212.png]]
 		- angleZ seems like an important feature!
-- (2nd) - Two stage predictions: use LGBM to sharpen results from the first model (rather than smart postprocessing)
+- ### (2nd) - Two stage predictions: use LGBM to sharpen results from the first model (rather than smart postprocessing)
 	- https://www.kaggle.com/competitions/child-mind-institute-detect-sleep-states/discussion/459627
 	- used enssembling similar to  [[Weighted Boxes Fusion (WBF) ensembling]]
 		- code
@@ -124,7 +124,7 @@ Note: if you submitted multiple predictions for the same sleep event, you'll get
 	- After getting the score for each step, he uses a LGBM model to predict the scores for the steps (but the steps are shifted by a bit)
 		- this is so he can get more predictions that are nearby. the extra predictions won't harm his score
 	- he concats these new predictions back onto the original table from step 2
-- (3rd) - reduce granularity from 5sec to 30sec (most efficient solution). remove noise
+- ### (3rd) - reduce granularity from 5sec to 30sec (most efficient solution). remove noise
 	- https://www.kaggle.com/competitions/child-mind-institute-detect-sleep-states/discussion/459599
 	- We decided to divide the series into one-day sequences and reduce the granularity from 5 secs to 30 secs
 		- probably to reduce model size and speed it up. They due have a 60-sec leeway with the eval metric
@@ -168,7 +168,7 @@ Note: if you submitted multiple predictions for the same sleep event, you'll get
 			- I COULDN'T find this logic in the github (at a glance)
 		- We decided to create sequences of days starting at 17:00 local time. If one day it was not complete at the beginning or at the end, we added padding.
 		- the final weighing of the models (in the ensemble) was adjusted manually based on local CV
-- (4th) - smart feature engineering. input dim: 17280 x n_features. output dim: 17280 x 2
+- ### (4th) - smart feature engineering. input dim: 17280 x n_features. output dim: 17280 x 2
 	- https://www.kaggle.com/competitions/child-mind-institute-detect-sleep-states/discussion/459637
 	- solution code: [https://github.com/nikhilmishradevelop/kaggle-child-mind-institute-detect-sleep-states](https://github.com/nikhilmishradevelop/kaggle-child-mind-institute-detect-sleep-states)
 	- **Model Inputs**: 17280 x n_features length sequences as input (17280 = 12 steps_per_minute x 60_minutes * 24 hours)  
@@ -186,7 +186,7 @@ Note: if you submitted multiple predictions for the same sleep event, you'll get
 		- Final_Sub = WBF(Penguins_Predictions * 0.25 + Nikhil's Predictions\*0.75)
 	- I looked at their code, but I don't quite understand their ensembling solution. Also, I'm not sure if this code was the final one they used:
 		- https://github.com/nikhilmishradevelop/kaggle-child-mind-institute-detect-sleep-states/blob/main/nbs/ensembling_experiments.ipynb
-#### Takeaways
+## Takeaways
 - In time series problems where are you **identifying events** within the series (not predicting future values), you can double your training data (and get better results) by reversing all the events in the time series.
 - When postprocessing is annoying (e.g. there's a constraint where there's only two awake/onset events a day), you can use two models:
 	- 1) The first to give you probability distributions of where the event is

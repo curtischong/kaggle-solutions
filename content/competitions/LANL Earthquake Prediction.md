@@ -5,14 +5,17 @@
 - "We define large failure events as times for which stress drop exceeds 0.05 MPa within 1 ms."
 	- https://www.kaggle.com/c/LANL-Earthquake-Prediction/discussion/90664#latest-535844
 **Eval Metric:** [[Mean absolute error (MAE)]]
-##### Summary
-- you’ll predict the time remaining before laboratory earthquakes occur from real-time seismic data.
+## Summary
+- This was a competition with a high leaderboard shakeup because ppl overfit the public LB
+- Your goal is to predict the time remaining before laboratory earthquakes occur from real-time seismic data.
 - these aren't real earthquakes. it's a lab setup:
 	- ![[Pasted image 20240129154843.png|400]]
 - **Why did many ppl overfit the public lb?**
-	- 
-##### Solutions
-- (1st) [[Add noise to denoise median statistic]] PSI's solution
+	- they blindly subtracted the data by the mean (of the acoustic data) during training, but the mean shifts in the test set
+
+## Important notebooks/discussions
+## Solutions
+- ### (1st) [[Add noise to denoise median statistic]] PSI's solution
 	- https://www.kaggle.com/competitions/LANL-Earthquake-Prediction/discussion/94390
 	- solution code:
 		- solo lgb model: https://www.kaggle.com/ilu000/1-private-lb-kernel-lanl-lgbm/
@@ -57,7 +60,7 @@
 	- "We have one additional binary logloss with the target specifying if the time to failure (ttf) is <0.5 and one further MAE loss on the target of time-since-failure."
 	- Neural nets trained on raw data failed
 		- so didn't consider using [[denoise autoencoder]]
-- (2nd) lots of signal processing features. made train data look like test data
+- ### (2nd) lots of signal processing features. made train data look like test data
 	- https://www.kaggle.com/competitions/LANL-Earthquake-Prediction/discussion/94369
 	- made train data look like test data (the img from https://www.kaggle.com/c/LANL-Earthquake-Prediction/discussion/90664#latest-535844)
 	- features:
@@ -76,7 +79,7 @@
 	- I THINK THEY DIDN'T HAVE CV. THEY JUST USED INTUITION
 		- "I felt there aren'​t much information we can extract from the acustic ​data and I felt I have more than enough features to get all the information"
 	- used a Default parameter ​CatBoost single model
-- (3rd)
+- ### (3rd)
 	- Already mentioned in the [discussion](https://www.kaggle.com/c/LANL-Earthquake-Prediction) , we expected test from p4677.
 	- the yhat is found via (NOTE: I don't completely understand this) :
 		- `best_y = np.median(np.hstack([np.repeat(cycle_len, int(100*cycle_len)) for cycle_len in chunk_length_list]))`
@@ -87,14 +90,12 @@
 			- 2. `np.repeat(cycle_len, int(100*cycle_len))`: For each `cycle_len` from the `chunk_length_list`, it repeats `cycle_len` `int(100*cycle_len)` times. For example, if `cycle_len` is 2, it creates an array `[2, 2, 2,...]` with length `int(100*2) = 200`.
 		    - 3. `np.hstack([])`: This function is used for horizontally stacking all the arrays created for each `cycle_len` in `chunk_length_list` and making one single flattened array.
 		    - 4. `np.median()`: Finally, the median of the created array is calculated and is stored in `best_y`.
-- (5th)
-- (7th)
+- ### (5th)
+- ### (7th)
 	- https://www.kaggle.com/competitions/LANL-Earthquake-Prediction/discussion/94359
 	- one EarthQuake (EQ) out CV 
 	- Calculated around 200 features based mainly on [[Short-time Fourier Transform (STFT)]]
-##### Important notebooks/discussions
-
-#### Takeaways
+## Takeaways
 - (1st and 2nd) made a sub-train set that is the same distribution of test. if you can figure out how the test distribution would look like
 	- Sometimes models will still generalize better if you give them diverser training examples and aligning training and test sets can be really overfitty
 - You always have to pay attention to the mean / median of your test/train dataset. These tricks can help:

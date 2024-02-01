@@ -9,12 +9,25 @@ Your (forecasted returns) - (actual market returns)
 	- it's calculated by: log(price in current time step / price in previous time step)
 - the market returns are the weighted sums of each asset's returns (each asset gets a diff weight)
 - more details here: https://www.kaggle.com/code/cstein06/tutorial-to-the-g-research-crypto-competition/notebook
-##### Summary
-##### Solutions
-- (2nd) [[lgbm]]
+## Summary
+
+## Important notebooks/discussions
+- https://www.kaggle.com/code/cstein06/tutorial-to-the-g-research-crypto-competition/notebook
+	-  log returns are preferred for mathematical modelling of time series
+		- cause they are additive across time
+		- and they are not bounded (regular returns cannot go below -100%)
+		- you just log the return to calculate this (diff between curr price and the prev price)
+	- there is high but variable correlation between the price of BTC and ETH
+	- we want to work with constant mean, variance, and autocorrelation variables
+		- since these are stationary distributions, and we can use forecasting techniques on it
+	- use StandardScaler and fit_transform your input/output feats (cause regression models care about being in the proper scale)
+- https://www.kaggle.com/code/jagofc/detailed-local-api-introduction/notebook
+	- this **local api** module allows you to emulate the `gresearch_crypto` timeseries API locally (so you can submit to the public LB)
+## Solutions
+- ### (2nd) [[lgbm]]
 	- https://www.kaggle.com/competitions/g-research-crypto-forecasting/discussion/323098
 	- "I'll strive to provide insight into my methods, but without giving away model details that could be profitable for the host"
-	- ### Crossvalidation
+	- #### Crossvalidation
 		- there were around 200 weeks of data
 		- used 6-fold, walk-forward, grouped cross validation
 			- the group key was the timestamp
@@ -47,7 +60,7 @@ Your (forecasted returns) - (actual market returns)
 			- The solution was to select small subsets of data, use df.update() on those subsets, then append to a list of dataframes, and then at the end, concatenate the list into one dataframe.
 			- [[polars]] would've prob fixed this
 			- he used [[Numba]] for feature engineering
-- (3rd) simple feature engineering, only [[lgbm]]
+- ### (3rd) simple feature engineering, only [[lgbm]]
 	- https://www.kaggle.com/competitions/g-research-crypto-forecasting/discussion/323703
 	- solution code
 		- training: https://www.kaggle.com/code/sugghi/training-3rd-place-solution
@@ -78,13 +91,13 @@ Your (forecasted returns) - (actual market returns)
 				- I guess this makes sense. cause if you do a weighted average on generated data, then you could be over-indexing on synthetic data (if that currency was BTC - since it has a higher weight than all other)
 		- another feature: current currency price - average price of all currencies
 			- (not sure if weighted average)
-- (7th) only modelling. the only feature added was time of day
+- ### (7th) only modelling. the only feature added was time of day
 	- the final submission is an ensemble of 4 models trained with different sequence lengths.
 		- they probably mean different periods of data?
 	- for the image below, it looks like the minutes 90 is just the last 90 minutes of data right before the current time?
 	- ![[Pasted image 20240125155158.png]]
 	- [[axial attention]]
-- (9th) feature engineering [[expert models]] [[lgbm]]
+- ### (9th) feature engineering [[expert models]] [[lgbm]]
 	- https://www.kaggle.com/competitions/g-research-crypto-forecasting/discussion/324180
 	- inference solution code: https://www.kaggle.com/code/bturan19/lgb-3fold-rollingagg-lagtarget-submissioninference/notebook
 	- the hull moving average was their most important feature
@@ -94,21 +107,6 @@ Your (forecasted returns) - (actual market returns)
 	- I have 3 different LightGBM models that were trained for different market conditions. Up market, down market and relatively more stable market. Then I get the average of them. [[expert models]]
 	- they only made 3 models. they used the same 3 models to predict for each asset
 		- Note: the model doesn't see the data for all assets at once. it just predicts per-asset
-##### Important notebooks/discussions
-- https://www.kaggle.com/code/cstein06/tutorial-to-the-g-research-crypto-competition/notebook
-	-  log returns are preferred for mathematical modelling of time series
-		- cause they are additive across time
-		- and they are not bounded (regular returns cannot go below -100%)
-		- you just log the return to calculate this (diff between curr price and the prev price)
-	- there is high but variable correlation between the price of BTC and ETH
-	- we want to work with constant mean, variance, and autocorrelation variables
-		- since these are stationary distributions, and we can use forecasting techniques on it
-	- use StandardScaler and fit_transform your input/output feats (cause regression models care about being in the proper scale)
-- https://www.kaggle.com/code/jagofc/detailed-local-api-introduction/notebook
-	- this **local api** module allows you to emulate the `gresearch_crypto` timeseries API locally (so you can submit to the public LB)
-
-
-#### Takeaways
+## Takeaways
 - feature engineering is so important
 - you can get very far with basic gradient boosted tree models
-- 

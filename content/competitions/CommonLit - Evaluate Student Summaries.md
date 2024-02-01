@@ -3,10 +3,9 @@
 **Input:** 
 **Output:** 
 **Eval Metric:** 
-##### Summary
+## Summary
 The goal of the competition is to predict content and wording scores for summaries on unseen topics.
-##### Solutions
+## Important notebooks/discussions
+## Solutions
 
-##### Important notebooks/discussions
-
-#### Takeaways
+## Takeaways

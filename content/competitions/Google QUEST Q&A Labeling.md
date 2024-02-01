@@ -29,12 +29,14 @@
 	- so ppl in the competition talked about "thresholding" their predictions (and treating it as a classification problem, rather than a regression or even a ranking problem)
 	- why does making it discrete matter? doesn't spearman corr only care about rank?
 		- no. cause [[Spearman's correlation Coefficient]] REALLY CARES if two items have have same score vs if one is a bit higher than other
-##### Summary
+## Summary
 - There were A LOT OF THE TOP KAGGLE GRANDMASTERS IN THIS COMPETITION.
 	- so the solutions are very high quality
-
-##### Solutions
-- (1st)
+## Important notebooks/discussions
+- https://www.kaggle.com/code/carlolepelaars/understanding-the-metric-spearman-s-rho/notebook
+	- many ppl were just using binary_crossentropy since the targets "look" like a binary classification problem
+## Solutions
+- ### (1st)
 	- https://www.kaggle.com/c/google-quest-challenge/discussion/129840
 		- solution code: https://github.com/oleg-yaroshevskiy/quest_qa_labeling
 		- [[use intermediate layer results (weighted)]]
@@ -74,9 +76,9 @@
 	- "Well, there is some post-processing. But tuning thresholds for each target was clearly seen as a straight way to overfitting, especially with 30 targets and so small public test size."
 	- "This model is initialized with original BERT weights, then finetuning with SX data, finally reusing the checkpoint in our pipeline. A subtle intermediate step was to delete classifier weights and biases from the SX checkpoint, because we had to switch from 6 SX targets to 30."
 		- not sure if this is a trick or not. prob not
-- (2nd) - Very robust CV. Very nicely formatted target
+- ### (2nd) - Very robust CV. Very nicely formatted target
 	- https://www.kaggle.com/competitions/google-quest-challenge/discussion/129978
-	- ### Modifying the metric
+	- #### Modifying the metric
 		- Given the metric is rank-based, and given targets are not binary, it seemed important to be able to predict values that are neither 0 or 1 correctly.
 			- they tried to use one-hot encoding of the targets (since some targets had a small number of distinct values)
 				- For example: the "answer_type_procedure" column only had this as targets:
@@ -87,7 +89,7 @@
 		- The metric they settled on:
 			- [[binary encoded categorical ordinal targets]]
 
-	- ### Cross validation
+	- #### Cross validation
 		- using ONLY [[GroupKFold]] (where the examples are grouped by question body) **didn't work**
 			- 1) "Test data is different to training data in the sense that it only has one question-answer pair sampled out of a group of questions in train data. There can be stark noise for labels of the same question, which is why this needs to be addressed robustly."
 				- I don't 100% know what this means
@@ -102,7 +104,7 @@
 				- maybe they just look at [[MAELoss]] between the yhat and y for that one row
 			- Ignore spelling column (labels weren't very precise). [[drop bad targets from CV]]
 			- Final CV is a mean of 5 folds.
-	- post processing
+	- #### post processing
 		- [[clip outputs to be within range]]
 			if their final predictions are `x=[0.01, 0.015, 0.02, 0.03, 0.04]` and our optimal thresholds are `coefs=[0.016, 0.029]`
 			- then we would clip the data with `np.clip(x, coefs[0], coefs[1])`
@@ -125,8 +127,4 @@
 			- then they take the final embeddings and concatenate the featrues before feeding it into a dense layer with 30 "target" values
 				- target is in ""s cause: "(For the sake of simplicity we show the architecture for the original 30 targets. It was adapted to work with the binarized targets.)"
 
-##### Important notebooks/discussions
-- https://www.kaggle.com/code/carlolepelaars/understanding-the-metric-spearman-s-rho/notebook
-	- many ppl were just using binary_crossentropy since the targets "look" like a binary classification problem
-
-#### Takeaways
+## Takeaways

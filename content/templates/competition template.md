@@ -3,9 +3,9 @@
 **Input:** 
 **Output:** 
 **Eval Metric:** 
-##### Summary
-##### Solutions
+## Summary
+## Solutions
 
-##### Important notebooks/discussions
+## Important notebooks/discussions
 
-#### Takeaways
+## Takeaways

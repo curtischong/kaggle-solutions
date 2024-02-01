@@ -8,10 +8,7 @@
 **Eval Metric:** 
 - The submitted probabilities for a given row are not required to sum to one because they are rescaled prior to being scored (each row is divided by the row sum)
 	- since we're predicting class 0 and class 1, and it's rebalanced, this is just a binary classification
-
-**glossary:** `epsilon` is the date for each row in the (optional dataset) `greeks.csv`
-
-##### Summary
+## Summary
 - ![[Pasted image 20240128173618.png]]
 	- yep :) This is a fun competition
 	- **7,327 Competitors, 6,430 Teams**
@@ -32,91 +29,8 @@
 		- they spent too much time [[overfitting yourself]]
 - **What is reweighing?**
 	- maybe " the reweighting is done in a way such that the class predictions are more balanced overall across all test data rows"
-##### Solutions
-- (1st) [[TabPFN]] plus CV + [[alternative targets (auxiliary objective)]] for "hard to predict"
-	- https://www.kaggle.com/competitions/icr-identify-age-related-conditions/discussion/430843
-	- solution code: https://storage.googleapis.com/kaggle-forum-message-attachments/2384935/19562/adv_model_training.ipynb
-	- The "greeks.csv" was useless. I think, because we have no greeks for the test data.
-	- Gradient boosting was obviously overfitting
-	- feature engineering led to overfitting
-	- **Cross validation**
-		- 10 folds cv, repeat for each fold 10-30 times, [[select 2 best models for each fold on CV]] (yes, cv somehow worked in this competition!).The training was so unstable, that **the cv-scores could vary from 0.25 to 0.05 for single fold**, partially due to large dropout values, partially due to little amount of train data. That's why I picked 2 best models for each fold.
-		- in the training notebook:
-			- their CV is using StratifiedKFold
-			- they are only printing the lowest validation loss (not using? [[select 2 best models for each fold on CV]])?
-				- the weights are saved to their own h5 file. so maybe they're just picking the right one based on the score
-			- I can confirm that for each of the 10 train-validate splits, they are running them 10 times.
-	- What did work:
-		- DNN based on Variable Selection Network
-			- https://arxiv.org/abs/1912.09363
-		- No "casual" normalization of data like MinMaxScaler or StandartScaler, but instead a linear projection with 8 neurons for each feature.
-		- Huge values of dropout: 0.75->0.5->0.25 for 3 main layers.
-		- Reweighting the probabilities in the end worked really good
-		- The cv was some kind of Multi-label. At first I trained some baseline DNN, gathered all validation data and labeled it as follows: (y_true = 1 and y_pred < 0.2) or (y_true = 0 and y_pred > 0.8) -> label 1, otherwise label 0. So, this label was somthing like "hardness to predict". And the other label was, of course, the target itself.
-	- target engineering
-		- Added a [[hardness to predict label]]
-			- Trained some baseline DNN, gathered all validation data and labeled it as follows: (y_true = 1 and y_pred < 0.2) or (y_true = 0 and y_pred > 0.8) -> label 1, otherwise label 0
-			- this DNN is: "literally the model with 2 VariableSelectionFlow layers instead of 3"
-	- feature engineering
-		- imputed missing values with the median [[filling training data (impute data)]] (didn't test mean / [[K-nearest neighbour (KNN)]])
-		- didn't resample or preprocess for noise reduction
-	- comments
-		- "How much did you step 6 improve your model. If I get it right, you override original targets by the model's out of fold prediction if the prediction is confident enough. I had something like that in mind but it seems it felt in a crack. I used this successfully in the past and I have seen recent competition winners share something similar too." - CPMP, Kaggle Grandmaster
-			- "I didn't override the original target, the tgt2 was used only for better splits during cross-validation. Step 6 improved the score by 0.02."
-		- "In my experiments standardization of the data deteriorated the cv-score, though I don't fully understand why"
-		- "It is a bit funny to see people thinking Time series should behave like I.I.D and stationary data . These deviations are not uncommon , particularly in fields like Finance. That's why modelling for these data is still very challenging and overfitting them is very easy" - Serigne - competitions master
-		- "I remember clearly conventional belief that we are not even suppose to try neural network if we don't have a sizeable data. I guess I'm dead wrong."
-		- "I tried reducing dimensions with autoencoder, but it didn't look very promising." - Tilii - competitions master
-		- it took 10 hrs to train the DNN
-		- "And regarding [[balanced logloss]] - as I understand this, reweighting just stretches the probabilities in one or other side, but if they are in the middle (0.5) they stay there)"
-- (2nd) Dropped rows where date was unknown. [[catboost]], [[xgboost]], [[TabPFN]]
-	- https://www.kaggle.com/competitions/icr-identify-age-related-conditions/discussion/430860
-	- solution code: https://www.kaggle.com/code/opamusora/main-notebook
-	- filled Nan values with -100 [[filling training data (impute data)]]
-	- used a technique I saw in some other competition: reducing dimensions with umap and then labeling clusters with kmeans, it didn't bring a lot of score, but it's there ([[alternative targets (auxiliary objective)]]???)
-	- did feature permutation manually, dropped any cols that made score even slightly worse
-		- interesting that it worked
-	- used Catboost, xgb with parameters from some public notebook and [[TabPFN]]
-	- [[remove rows where feat=x to find unknown data clusters]] to [[remove easy examples]]
-		- **removed rows where time (ƒrom `greeks`) is None (23% of data)**, I noticed a weird cluster that was far away from all other data when playing with umap and it were rows with absent time
-			- **many people didn't remove those rows. BECAUSE THE DATASET WAS ALREADY SMALL**
-		- "it obviously dropped some score (since we remove a lot of easy class 0 ), but eventually I decided to keep it cause it would be better for general cases."
-			- those "data points were really far from the main cluster so I decided to remove it anyway"
-			- "seems intuitive for me to drop data thats insanely far from most observations and also has a clear feature that distinguishes it from everything else" (in discord)
-	- [[permutation feature importance to select features]]
-		- they removed 20 features in the best model
-		- I checked the discord. They didn't mention much about how they did the permutation (it was prob mentioned in a call)
-	- we wanted to try edit [[TabPFN]] to get embeddings and we had an idea to try fine tune tabpfn, but it didn't work out.
-	- optuna didn't work
-	- Stacking didn't work
-	- **used a simple 4-fold** [[stratified kfold]]
-- (3rd) didn't do much after the baseline - got lucky by NOT working on it too much and overfitting
-	- https://www.kaggle.com/competitions/icr-identify-age-related-conditions/discussion/430978
-	- solution code: https://www.kaggle.com/code/junyang680/icr-lightgbmbaseline
-	- [[create features through the ratio between different features]]
-		- didn't do this in the end
-	- they didn't even select the top k more correlated features (with the target) for their final submission
-- (4th) create models to predict alternative targets (Alpha, Beta, Gamma, Delta in `greeks`), then use these as features
-	- https://www.kaggle.com/competitions/icr-identify-age-related-conditions/discussion/431173
-	- solution code: https://www.kaggle.com/code/andrejvetrov/third?scriptVersionId=131958512
-	- Now for the key features of my solution.
-		1) Recursive filling of gaps in features using regression on CatBoostRegressor (default hyperparameters),  
-		2) greeks['Epsilon'] Unknown were filled with greeks['Epsilon'].min()  
-		3) row_id - row number in train and in test when sorting by Epsilon
-			- they used the row ID as a feature???
-			- "I added this simple feature more intuitively for the reason that although the size of the dataset is small, it has a time component that must be taken into account somehow"
-			- SO EPSILON IS TECHNICALLY IN THE DATASET. IT'S THE ROW ID
-		4) Trained models for each Alpha, Beta, Gamma, Delta and stacked these probabilities to be used as features.
-		5) 5-fold cross validation and then simple averaging
-- (5th) create models to predict alternative targets (Alpha, Beta, Gamma, Delta in `greeks`), then use these as features
-	- https://www.kaggle.com/competitions/icr-identify-age-related-conditions/discussion/430907
-	- solution code: https://www.kaggle.com/code/celiker/icr-5-place-solution/notebook
-	- main points:
-		- Trained models for each Alpha, Beta, Gamma, Delta and stacked these probabilities to be used as features.
-		- Created lgbm imputer models for every feature even if it has no missing values on train data.
-			- note: Removing imputers didn't effect the score, so the main strength is stacking greeks.
-		- Used RepeatedStratifiedKFold(n_splits=5, n_repeats=5) with a basic catboost model.
-##### Important notebooks/discussions
+- **Glossary:** `epsilon` is the date for each row in the (optional dataset) `greeks.csv`
+## Important notebooks/discussions
 - Baseline notebook and EDA
 	- https://www.kaggle.com/code/gusthema/identifying-age-related-conditions-w-tfdf
 		-  positive samples (class 1) only account for 17.50% of the data
@@ -165,7 +79,91 @@
 		- Now our new training dataset has $N^2$ samples, the new validation dataset has $N * M_0$ samples
 			- where $M_0$ is the size of our validation set
 		- kaggle master: "I think it would work well if the two classes were better separated overall. Sadly, I don't think it will be competitive for this dataset"
-#### Takeaways
+## Solutions
+- ### (1st) [[TabPFN]] plus CV + [[alternative targets (auxiliary objective)]] for "hard to predict"
+	- https://www.kaggle.com/competitions/icr-identify-age-related-conditions/discussion/430843
+	- solution code: https://storage.googleapis.com/kaggle-forum-message-attachments/2384935/19562/adv_model_training.ipynb
+	- The "greeks.csv" was useless. I think, because we have no greeks for the test data.
+	- Gradient boosting was obviously overfitting
+	- feature engineering led to overfitting
+	- **Cross validation**
+		- 10 folds cv, repeat for each fold 10-30 times, [[select 2 best models for each fold on CV]] (yes, cv somehow worked in this competition!).The training was so unstable, that **the cv-scores could vary from 0.25 to 0.05 for single fold**, partially due to large dropout values, partially due to little amount of train data. That's why I picked 2 best models for each fold.
+		- in the training notebook:
+			- their CV is using StratifiedKFold
+			- they are only printing the lowest validation loss (not using? [[select 2 best models for each fold on CV]])?
+				- the weights are saved to their own h5 file. so maybe they're just picking the right one based on the score
+			- I can confirm that for each of the 10 train-validate splits, they are running them 10 times.
+	- What did work:
+		- DNN based on Variable Selection Network
+			- https://arxiv.org/abs/1912.09363
+		- No "casual" normalization of data like MinMaxScaler or StandartScaler, but instead a linear projection with 8 neurons for each feature.
+		- Huge values of dropout: 0.75->0.5->0.25 for 3 main layers.
+		- Reweighting the probabilities in the end worked really good
+		- The cv was some kind of Multi-label. At first I trained some baseline DNN, gathered all validation data and labeled it as follows: (y_true = 1 and y_pred < 0.2) or (y_true = 0 and y_pred > 0.8) -> label 1, otherwise label 0. So, this label was somthing like "hardness to predict". And the other label was, of course, the target itself.
+	- target engineering
+		- Added a [[hardness to predict label]]
+			- Trained some baseline DNN, gathered all validation data and labeled it as follows: (y_true = 1 and y_pred < 0.2) or (y_true = 0 and y_pred > 0.8) -> label 1, otherwise label 0
+			- this DNN is: "literally the model with 2 VariableSelectionFlow layers instead of 3"
+	- feature engineering
+		- imputed missing values with the median [[filling training data (impute data)]] (didn't test mean / [[K-nearest neighbour (KNN)]])
+		- didn't resample or preprocess for noise reduction
+	- comments
+		- "How much did you step 6 improve your model. If I get it right, you override original targets by the model's out of fold prediction if the prediction is confident enough. I had something like that in mind but it seems it felt in a crack. I used this successfully in the past and I have seen recent competition winners share something similar too." - CPMP, Kaggle Grandmaster
+			- "I didn't override the original target, the tgt2 was used only for better splits during cross-validation. Step 6 improved the score by 0.02."
+		- "In my experiments standardization of the data deteriorated the cv-score, though I don't fully understand why"
+		- "It is a bit funny to see people thinking Time series should behave like I.I.D and stationary data . These deviations are not uncommon , particularly in fields like Finance. That's why modelling for these data is still very challenging and overfitting them is very easy" - Serigne - competitions master
+		- "I remember clearly conventional belief that we are not even suppose to try neural network if we don't have a sizeable data. I guess I'm dead wrong."
+		- "I tried reducing dimensions with autoencoder, but it didn't look very promising." - Tilii - competitions master
+		- it took 10 hrs to train the DNN
+		- "And regarding [[balanced logloss]] - as I understand this, reweighting just stretches the probabilities in one or other side, but if they are in the middle (0.5) they stay there)"
+- ### (2nd) Dropped rows where date was unknown. [[catboost]], [[xgboost]], [[TabPFN]]
+	- https://www.kaggle.com/competitions/icr-identify-age-related-conditions/discussion/430860
+	- solution code: https://www.kaggle.com/code/opamusora/main-notebook
+	- filled Nan values with -100 [[filling training data (impute data)]]
+	- used a technique I saw in some other competition: reducing dimensions with umap and then labeling clusters with kmeans, it didn't bring a lot of score, but it's there ([[alternative targets (auxiliary objective)]]???)
+	- did feature permutation manually, dropped any cols that made score even slightly worse
+		- interesting that it worked
+	- used Catboost, xgb with parameters from some public notebook and [[TabPFN]]
+	- [[remove rows where feat=x to find unknown data clusters]] to [[remove easy examples]]
+		- **removed rows where time (ƒrom `greeks`) is None (23% of data)**, I noticed a weird cluster that was far away from all other data when playing with umap and it were rows with absent time
+			- **many people didn't remove those rows. BECAUSE THE DATASET WAS ALREADY SMALL**
+		- "it obviously dropped some score (since we remove a lot of easy class 0 ), but eventually I decided to keep it cause it would be better for general cases."
+			- those "data points were really far from the main cluster so I decided to remove it anyway"
+			- "seems intuitive for me to drop data thats insanely far from most observations and also has a clear feature that distinguishes it from everything else" (in discord)
+	- [[permutation feature importance to select features]]
+		- they removed 20 features in the best model
+		- I checked the discord. They didn't mention much about how they did the permutation (it was prob mentioned in a call)
+	- we wanted to try edit [[TabPFN]] to get embeddings and we had an idea to try fine tune tabpfn, but it didn't work out.
+	- optuna didn't work
+	- Stacking didn't work
+	- **used a simple 4-fold** [[stratified kfold]]
+- ### (3rd) didn't do much after the baseline - got lucky by NOT working on it too much and overfitting
+	- https://www.kaggle.com/competitions/icr-identify-age-related-conditions/discussion/430978
+	- solution code: https://www.kaggle.com/code/junyang680/icr-lightgbmbaseline
+	- [[create features through the ratio between different features]]
+		- didn't do this in the end
+	- they didn't even select the top k more correlated features (with the target) for their final submission
+- ### (4th) create models to predict alternative targets (Alpha, Beta, Gamma, Delta in `greeks`), then use these as features
+	- https://www.kaggle.com/competitions/icr-identify-age-related-conditions/discussion/431173
+	- solution code: https://www.kaggle.com/code/andrejvetrov/third?scriptVersionId=131958512
+	- Now for the key features of my solution.
+		1) Recursive filling of gaps in features using regression on CatBoostRegressor (default hyperparameters),  
+		2) greeks['Epsilon'] Unknown were filled with greeks['Epsilon'].min()  
+		3) row_id - row number in train and in test when sorting by Epsilon
+			- they used the row ID as a feature???
+			- "I added this simple feature more intuitively for the reason that although the size of the dataset is small, it has a time component that must be taken into account somehow"
+			- SO EPSILON IS TECHNICALLY IN THE DATASET. IT'S THE ROW ID
+		4) Trained models for each Alpha, Beta, Gamma, Delta and stacked these probabilities to be used as features.
+		5) 5-fold cross validation and then simple averaging
+- ### (5th) create models to predict alternative targets (Alpha, Beta, Gamma, Delta in `greeks`), then use these as features
+	- https://www.kaggle.com/competitions/icr-identify-age-related-conditions/discussion/430907
+	- solution code: https://www.kaggle.com/code/celiker/icr-5-place-solution/notebook
+	- main points:
+		- Trained models for each Alpha, Beta, Gamma, Delta and stacked these probabilities to be used as features.
+		- Created lgbm imputer models for every feature even if it has no missing values on train data.
+			- note: Removing imputers didn't effect the score, so the main strength is stacking greeks.
+		- Used RepeatedStratifiedKFold(n_splits=5, n_repeats=5) with a basic catboost model.
+## Takeaways
 - (1st)'s [[hardness to predict label]] prob made a big difference
 - Use a deep neural network. Always. Even if you have little data. If you have a good CV, it'll work.
 	- (1st) and (2nd) found success with [[TabPFN]]

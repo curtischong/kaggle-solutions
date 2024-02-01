@@ -3,16 +3,23 @@
 **Input:** 
 **Output:** 
 **Eval Metric:** [[Kendall Tau correlation]] AND custom metric for the top-k predictions
-##### Summary
-the goal is to predict the runtime of an AI model based on its characteristics, such as the number of parameters/the number of layers/hardware configuration.
-- you have to predict the runtime for many different types of ml models
-	- e.g. bert, resnet50
+## Summary
+- The goal is to predict the runtime of an AI model based on its characteristics, such as the number of parameters/the number of layers/hardware configuration.
+	- you have to predict the runtime for many different types of ml models
+		- e.g. bert, resnet50
+- Glossary:
+	- `xla`: accelerated linear algebra. it's an open-source compiler for machine learning: https://www.tensorflow.org/xla
+	- `Hlo`: high level optimizer
 
-glossary:
-- xla means: accelerated linear algebra. it's an open-source compiler for machine learning: https://www.tensorflow.org/xla
-- Hlo means: high level optimizer
-##### Solutions
-- (1st) Speed up iteration time. Custom attention layer to compare configs throughout the network
+## Important notebooks/discussions
+- understanding the competition
+	- https://www.kaggle.com/code/ayushs9020/understanding-the-competition-google-slow-vs-fast
+- explaining tensor tile, tensor shard, simulated annealing, and langevin dynamics
+	- https://www.kaggle.com/competitions/predict-ai-model-runtime/discussion/435577
+- video links to googlers explaining mroe about the problem, and considerations
+	- https://www.kaggle.com/competitions/predict-ai-model-runtime/discussion/436629
+## Solutions
+- ### (1st) Speed up iteration time. Custom attention layer to compare configs throughout the network
 	-  https://www.kaggle.com/competitions/predict-ai-model-runtime/discussion/456343
 		- solution code: https://github.com/thanhhau097/google_fast_or_slow/tree/main
 		- We pruned and compressed the layout graphs in order to increase the efficiency of our experiments [[speedup iteration]]
@@ -87,7 +94,7 @@ glossary:
 					- https://github.com/thanhhau097/google_fast_or_slow/blob/626c463dfb02abd739616773ca74f34e38635c71/dataset.py#L490
 		- To create our Linear/Conv blocks we followed the good practices in computer vision. We start by using `InstanceNorm` to normalise the input feature map, followed by `Linear`/[[SAGEConv]] layer, `SelfChannelAttetion` and `CrossConfigAttetion` (we concat the output with its input to preserve the individuality of each sample). Then, we sum the residual connection and finish with [[Gaussian Error Linear Unit (GELU)]] and dropout.
 		[[PairwiseHingeLoss]]
-- (2nd) Invented their own DiffMat Loss
+- ### (2nd) Invented their own DiffMat Loss
 	- https://www.kaggle.com/competitions/predict-ai-model-runtime/discussion/456365
 	- solution code: https://github.com/Obs01ete/kaggle_latenciaga/tree/master
 	- data cleaning
@@ -126,18 +133,18 @@ glossary:
 			- I think this is because the model already isn't learning positive OR negative examples well
 			- The model needs to first learn well from the "easier" examples before introducing "harder" ones.
 		- Train 4 folds and merge by mean latency and by [[mean reciprocal rank (MRR)]]
-- (3rd) Novel feature generation
+- ### (3rd) Novel feature generation
 	- https://www.kaggle.com/competitions/predict-ai-model-runtime/discussion/456377
 	- [[linformers]]
 	- Used [[GNN Positional encodings]]
 	- [[GPS Layers]]
 	- [[Adam optimizer]], [[cosine annealing LR]]
-- (4th) Only uses a [[multi layer perceptron]] - very clever feature engineering
+- ### (4th) Only uses a [[multi layer perceptron]] - very clever feature engineering
 	- https://www.kaggle.com/competitions/predict-ai-model-runtime/discussion/456462
 	- features:
 		- a few of the features were just the original columns (but untransformed): node_feat_index
 		- 
-- (5th) - [[Transformer to compress dimensions rather than flattening]]
+- ### (5th) - [[Transformer to compress dimensions rather than flattening]]
 	- https://www.kaggle.com/competitions/predict-ai-model-runtime/discussion/456093
 	- solution code: https://github.com/knshnb/kaggle-tpu-graph-5th-place
 	- Preprocessing
@@ -179,7 +186,7 @@ glossary:
 			- GATV2 DID NOT WORK???!?!??!
 		- fp16
 		- pseudo label
-- (6th) - [[graph isomorphism network]] [[Graph Attention Networks (GATs)]]
+- ### (6th) - [[graph isomorphism network]] [[Graph Attention Networks (GATs)]]
 	- solution code: https://github.com/hengck23/solution-predict-ai-model-runtime
 	- [[learn on subsets]]
 		- main problem:
@@ -196,16 +203,8 @@ glossary:
 		- I don't understand it, but it's not hard, and here's the code: https://github.com/hengck23/solution-predict-ai-model-runtime/blob/998d74a026a7b82705c458b81e67db8db5c8370b/src/res-gin4-pair-hop5-layout/myloss.py#L59
 	- We try both SAGE-conv[2] and GAT-conv[4]. GAT-conv gives better results.
 	- Since we are interested in top 5 ranks, we find [[ListMLE Loss]] is a better loss.
-	- 
-##### Important notebooks/discussions
-- understanding the competition
-	- https://www.kaggle.com/code/ayushs9020/understanding-the-competition-google-slow-vs-fast
-- explaining tensor tile, tensor shard, simulated annealing, and langevin dynamics
-	- https://www.kaggle.com/competitions/predict-ai-model-runtime/discussion/435577
-- video links to googlers explaining mroe about the problem, and considerations
-	- https://www.kaggle.com/competitions/predict-ai-model-runtime/discussion/436629
 
-#### Takeaways
+## Takeaways
 - find ways to reduce your input dataset as much as possible
 	- use [[data compression]] if you need to. This speeds up your iteration time by a lot
 	- do not train on padded columns if you don't need to

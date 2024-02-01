@@ -27,24 +27,39 @@
 Terms deep in the ontology tend to appear less frequently, be harder to predict, and thus their weights are larger (Clark & Radivojac, 2013). This does not always hold true however, as highlighted in the [following discussion](https://www.kaggle.com/competitions/cafa-5-protein-function-prediction/discussion/405237).
 
 - TODO: understand why their metric implementation was flawed. (there was a discussion post). This will teach you how this metric actually works
-##### Summary
+## Summary
 The goal is to figure out "what each protein does" (it's function)
-
 
 Note: This is like an oldschool kaggle competition. You submit predictions for the test directly via a tsv (tab separated value) file.
 - so competitors know what the test targets are
 
 A good solution uses both the fasta file (getting an LLM to make predictions based on the sequence) and the gene ontology
-##### Solutions
+
+## Important notebooks
+- getting started and understanding the competition: https://www.kaggle.com/code/gusthema/cafa-5-protein-function-with-tensorflow
+	- the majority of the `GO term Id`s have BPO(Biological Process Ontology) as their aspect.
+	- there are 40,000 GO term IDs
+		- but they only plan to make the model predict the top 1500
+		- they one-hot encode all 1500 into the target array
+	- it is using the train_embeddings = np.load('/kaggle/input/t5embeds/train_embeds.npy') created using this notebook:
+		- https://www.kaggle.com/code/sergeifironov/t5embeds-calculation-only-few-samples
+			- very interesting. They use SeqIO to read the fasta files efficiently (and get the number of sequences efficiently)
+	- I was confused reading the notebook cause I thought the embeddings came from a foundation model, not ones that were trained for the competition labels
+	- Note: this notebook only uses the fasta file, not the ontology graph to make their predictions
+- explaining information accretion (i.e. how the F-scores are weighed in the evaluation): https://www.kaggle.com/competitions/cafa-5-protein-function-prediction/discussion/405237
+- EDA: https://www.kaggle.com/competitions/cafa-5-protein-function-prediction/discussion/418006
+	- **Sequence length is important**
+		- We can see both very short (3 residues) and very long (35375 residues sequences) and they may not be well represented by the LLMs. How to handle them?
+## Solutions
 
 - Note: the classes are hierarchical: A leaf class can ONLY exist if all of its parent classes exist.
 
-- (2nd) graph neural net. comditional probability. gradient boosted trees just hardcore stuff
+- ### (2nd) graph neural net. conditional probability. gradient boosted trees just hardcore stuff
 	- https://www.kaggle.com/competitions/cafa-5-protein-function-prediction/discussion/434064
 	- solution code: https://github.com/btbpanda/CAFA5-protein-function-prediction-2nd-place
 		- they only did a simple 5-fold CV (nothing else was better)
 		- [[Gradient-Boosted Decision Tree]] improved their models the most (their own [[Pyboost]] framework is super fast)
-		- ### Alternative modelling approach - predicting the conditional probabilities
+		- **Alternative modelling approach - predicting the conditional probabilities**
 			- this is very smart. Basically, when training, for each protein, they tell the model: these are the OGs it is.
 				- but for OGs that are not a parent of a nonzero OG, that value is replaced with NaN, so the model ONLY LEARNS VALID OGs for that protein
 					- the three values are 0, 1, and NaN.
@@ -83,15 +98,15 @@ A good solution uses both the fasta file (getting an LLM to make predictions bas
 				- They need to make sure that the predicted probability is never higher than a probability for a parent
 					- perhaps they get this probability from the training set if it exists
 				- doing this check is important because their models don't take this into account (some aren't aware of the graph relationships)
-- (3rd)
+- ### (3rd)
 	- https://www.kaggle.com/competitions/cafa-5-protein-function-prediction/discussion/464437
 	- in addition to the ground truth GO labels, there are other GO labels that were computationally hypothesized (non experimental)
-		- sicne these aren't confirmed, he used them as additional training features, rather than as the target
+		- since these aren't confirmed, he used them as additional training features, rather than as the target
 	- Since the test_x will be experimentally validated in the future, he treated the train/validation/private test split like it was time series data
 		- ![[Pasted image 20240118135554.png]]
-		- This feels weird, but I guess it doesn't matter, cause as long as the validation data is diff form your train it's goo.d but it's weird since you might not be validating your model properly (the metric may not be stable since it's a bit shifted from your train data)
+		- This feels weird, but I guess it doesn't matter, cause as long as the validation data is diff form your train it's good. but it's weird since you might not be validating your model properly (the metric may not be stable since it's a bit shifted from your train data)
 			- but I guess he had to do it this way, cause he knows that in the future, the test (private) data might be collected with more precision, so the drift is expected
-- (4th)
+- ### (4th)
 	- https://www.kaggle.com/competitions/cafa-5-protein-function-prediction/discussion/433732
 		- approach
 			- 1) Prot-T5, ESM2, and Ankh Protein Language Model (PLM) embeddings. We carried out no further modifications or finetuning on the output of PLMs, only conversion to float32 to save memory.
@@ -101,21 +116,5 @@ A good solution uses both the fasta file (getting an LLM to make predictions bas
 			- concatenating ProtBERT sucked
 			- [[dimension reduction for feature generation]] However, when I reduced the dimensions of ProtBERT to 3dims using [[UMAP dimension reduction]]/tSNE and added it, the score improved
 		- 
-##### Important notebooks
-- getting started and understanding the competition: https://www.kaggle.com/code/gusthema/cafa-5-protein-function-with-tensorflow
-	- the majority of the `GO term Id`s have BPO(Biological Process Ontology) as their aspect.
-	- there are 40,000 GO term IDs
-		- but they only plan to make the model predict the top 1500
-		- they one-hot encode all 1500 into the target array
-	- it is using the train_embeddings = np.load('/kaggle/input/t5embeds/train_embeds.npy') created using this notebook:
-		- https://www.kaggle.com/code/sergeifironov/t5embeds-calculation-only-few-samples
-			- very interesting. They use SeqIO to read the fasta files efficiently (and get the number of sequences efficiently)
-	- I was confused reading the notebook cause I thought the embeddings came from a foundation model, not ones that were trained for the competition labels
-	- Note: this notebook only uses the fasta file, not the ontology graph to make their predictions
-- explaining information accretion (i.e. how the F-scores are weighed in the evaluation): https://www.kaggle.com/competitions/cafa-5-protein-function-prediction/discussion/405237
-- EDA: https://www.kaggle.com/competitions/cafa-5-protein-function-prediction/discussion/418006
-	- **Sequence length is important**
-		- We can see both very short (3 residues) and very long (35375 residues sequences) and they may not be well represented by the LLMs. How to handle them?
 #### Takeaways
-
-
+- Using language models (e.g. T5 or ProtBERT) to extract embeddings from the protein sequence is highly recommended

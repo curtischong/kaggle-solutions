@@ -1,14 +1,14 @@
-Link: https://www.kaggle.com/competitions/linking-writing-processes-to-writing-quality
-Problem Type: [[multi-class classification]] [[NLP]]
-Input: 
-Output: 
-Eval Metric: [[RMSE]]
-##### Summary
-Given only keystroke information, predict a student's essay score [0, 6], in increments of 0.5.
-- all alphanumeric characters were replaced with `q` so you couldn't decipher the original essay text
-##### Solutions
-
-- (3rd) Dieter's team.
+**Link:** https://www.kaggle.com/competitions/linking-writing-processes-to-writing-quality
+**Problem Type:** [[multi-class classification]] [[NLP]]
+**Input:** Time series data of keystroke info. All alphanumeric characters were replaced with `q` so you couldn't decipher the original essay text
+**Output:** A score from [0, 6] (integer, incrementing in 0.5) of the resulting essay
+**Eval Metric:** [[RMSE]]
+## Summary
+- Given only keystroke information, predict a student's essay score
+- You can predict their score pretty well! with an RMSE of around 0.5
+## Important notebooks/discussions
+## Solutions
+- ### (3rd) Dieter's team.
 	- https://www.kaggle.com/competitions/linking-writing-processes-to-writing-quality/discussion/466906
 		- 8fold cross validation
 		- [[identify domain shift]]: Deberta worked better on CV, while GBM were relatively bad on CV, but good on LB.
@@ -52,6 +52,4 @@ Given only keystroke information, predict a student's essay score [0, 6], in inc
 			- Adding more keystroke features to the deberta based model.
 			- More squeezeformer layers
 
-##### Important notebooks/discussions
-
-#### Takeaways
+## Takeaways

@@ -3,13 +3,22 @@
 **Input:** mp3 files
 **Output:** the transcribed Bengali text
 **Eval Metric:** [[Word Error Rate]]
-##### Summary
+## Summary
 
 Bengali dialects (especially those spoken by Muslim religious sermons) aren't transcribed well.
 - There are no robust open-source speech recognition models for Bengali
 - (the Google Speech API for Bengali has a Word Error Rate of 74% for Bengali religious sermons).
-##### Solutions
-- (1st) - openai whisper, custom whisper tokenizer, speech to text (SST) model, punctuation model
+## Important notebooks/discussions
+- explaining the competition
+	- https://www.kaggle.com/code/sujaykapadnis/bengali-speech-recognition-for-everyone
+	- the test set has 18 different dialects
+		- the train set only has 1 dialect
+	- each training sample is either a "train or valid" sample
+		- valid samples have been manually reviewed and corrected
+		- train samples have only been algorithmically labelled
+		- both are **drawn from the same distribution**.
+## Solutions
+- ### (1st) - openai whisper, custom whisper tokenizer, speech to text (SST) model, punctuation model
 	- https://www.kaggle.com/competitions/bengaliai-speech/discussion/447961
 	- cool tricks
 		- [[Spectrogram dithering]]
@@ -32,7 +41,7 @@ Bengali dialects (especially those spoken by Muslim religious sermons) aren't tr
 	- many ppl didn't succeed finetuning with whisper cause they didn't remove wrong annotations from the dataset
 		- "Because the competition dataset was not validated, the initial model was trained on OpenSLR datasets"
 			- yeah they really didn't trust the trainin data, which is why their score was so much better than everyone else's
-- (2nd) - SST, language, and punctuation model
+- ### (2nd) - SST, language, and punctuation model
 	- https://www.kaggle.com/competitions/bengaliai-speech/discussion/447976
 	- apply heavy augmentation for read speech and lighter augmentation for spontaneous speech
 		- probably because when someone is reading, it's more fake
@@ -68,7 +77,7 @@ Bengali dialects (especially those spoken by Muslim religious sermons) aren't tr
 		- we need to piece together these into actual words
 		- [[kenlm]] is the model that generates the final sentence (with the highest probabilities from the given subwords / sounds)
 			- this is why [[beam search decoding]] is used, to quickly find a string transcription
-- (3rd) [[Connectionist temporal classification (CTC)]], [[KenLM]], xlm-roberta-large, denoised using Demucs
+- ### (3rd) [[Connectionist temporal classification (CTC)]], [[KenLM]], xlm-roberta-large, denoised using Demucs
 	- https://www.kaggle.com/competitions/bengaliai-speech/discussion/447957
 	- [[text data cleaning]]
 		-  consecutive `[।!?]` in the train data were replaced by a single character
@@ -92,16 +101,7 @@ Bengali dialects (especially those spoken by Muslim religious sermons) aren't tr
 - (4th) similar solution to (3rd). not much new
 	- https://www.kaggle.com/competitions/bengaliai-speech/discussion/447995
 	- trained a spelling error correction model (but didn't work)
-##### Important notebooks/discussions
-- explaining the competition
-	- https://www.kaggle.com/code/sujaykapadnis/bengali-speech-recognition-for-everyone
-	- the test set has 18 different dialects
-		- the train set only has 1 dialect
-	- each training sample is either a "train or valid" sample
-		- valid samples have been manually reviewed and corrected
-		- train samples have only been algorithmically labelled
-		- both are **drawn from the same distribution**.
-#### Takeaways
+## Takeaways
 - use good training data.  if you are given bad training data, don't make a cake out of garbage. find better ingredients!
 - a good approach to data augmentation:
 	- (2nd) "most of the augmentations are there because logically it makes sense for them to be there and not the results of some grid search experiments. I try to take the same approach in CV comps too"

@@ -1,8 +1,11 @@
-Link: https://www.kaggle.com/c/UBC-OCEAN
-Problem Type: [[Image Classification]] [[Unknown Class Classification]] [[Multiple Instance Learning]]
-Input: [[Whole Slide Images]] and [[Image Masks]]
-Output: [[Class Name (Thresholded)]]
-Eval Metric: [[Balanced Accuracy]]
+**Link**: https://www.kaggle.com/c/UBC-OCEAN
+**Problem Type:** [[Image Classification]] [[Unknown Class Classification]] [[Multiple Instance Learning]]
+**Input:**
+- medical images of the tissue (Whole Slide Images)
+- And image masks for the tumor, healthy tissue, and dying tissue
+**Output:** The class you think the instance belongs to
+- You don't output a probability (only a class. so you need to decide on a threshold)
+**Eval Metric:** [[Balanced Accuracy]]
 ##### Summary
 Given a medical image scan, predict one of these [subtypes of ovarian cancer](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC2592352/): `CC, EC, HGSC, LGSC, MC, Other`. The `Other` class is not present in the training set; identifying outliers is one of the challenges of this competition.
 
@@ -21,7 +24,7 @@ https://www.kaggle.com/competitions/UBC-OCEAN/discussion/455890
 		- [Chowder](https://arxiv.org/pdf/1802.02212.pdf) - a Multiple Instance Learning (MIL) model - is still on par with more recent MIL models (e.g. [TransMIL](https://arxiv.org/abs/2106.00908), [DTFD-MIL](https://arxiv.org/abs/2203.12081))
 		- using the PNG file format took a lot of ram and was slow.
 			- (SVS, TIFF, NDPI) store data pyramidally to prevent the need for loading the entire images into RAM
-		- to analyze the large [[Whole Slide Images]] via a neural net, they split regions containing tissue into smaller patches (e.g. 224 x 224 px or 512 x 512 px)
+		- to analyze the large Whole Slide Images via a neural net, they split regions containing tissue into smaller patches (e.g. 224 x 224 px or 512 x 512 px)
 			- they also split Tissue Microarrays (TMA) into smaller patches
 		- 1) They used [Phikon](https://huggingface.co/owkin/phikon) to generate features -  a 2D tensor with shape `(n_patches, 768)`
 		- 2) They fed these features into Chowder, which outperformed DeepMIL, MeanPool, and DSMIL.
