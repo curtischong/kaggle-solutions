@@ -2,7 +2,7 @@
 
 **Problem Type:** [[Time Series]]
 
-**Input:** game statistics for the current day
+**Input:** Game statistics for the current day
 
 **Output:** a prediction of how engaged fans are with a specific player after a game
 - there are 4 target columns, each representing the engagement level fans have with that player
@@ -46,7 +46,7 @@
 	- [[hold-out cross validation]]
 	- [[target scaling]] using ($x^{1/4}$)
 	- [[lgbm]] with [[D.A.R.T]]
-- ### (3rd) 
+- ### (3rd) varying gap lengths for CV
 	- https://www.kaggle.com/competitions/mlb-player-digital-engagement-forecasting/discussion/256620
 	- solution code:
 		- training: https://github.com/nyanp/mlb-player-digital-engagement  
@@ -55,16 +55,19 @@
 		- ![[Pasted image 20240126122316.png]]
 	- Debug code locally using the API emulator
 	    - Test the robustness of my inference pipeline by "dropout" some of the data returned by the emulator (like chaos engineering) - [[sanity check]]
-- ### (5th)
+- ### (5th) [[drop outliers]]
 	- https://www.kaggle.com/competitions/mlb-player-digital-engagement-forecasting/discussion/271345
 	- Special matches (like a player's retirement match) should be removed from the data [[drop outliers]]
 		- e.g. Ichiro Suzuki got lots of engagement, despite doing poorly
 	- feature engineering
 		- made a submodel that predicts if a pitcher would pitch that day
-- ### (6th)
+- ### (6th) lots of feature engineering
 	- https://www.kaggle.com/competitions/mlb-player-digital-engagement-forecasting/discussion/271890
 	- Makabe's work
 		- derived many features from https://sabr.org/sabermetrics - stats about baseball
 	- [[encapsulate team's code in class]]
 ## Takeaways
-- lagged Features were very important (e.g. num pitches today - num pitches 30 days ago)
+- Use an [[is present bit]] if you expect to only use your target variable for a period of time
+- You need a lot of feature engineering with time series. Don't be afraid to make 1000 features!
+	- but dataset length probably matters, cause this dataset was kinda big (8Gb)
+- Lagged Features were very important (e.g. num pitches today - num pitches 30 days ago)

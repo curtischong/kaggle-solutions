@@ -42,7 +42,7 @@
 - https://www.kaggle.com/code/carlolepelaars/understanding-the-metric-spearman-s-rho/notebook
 	- many ppl were just using binary_crossentropy since the targets "look" like a binary classification problem
 ## Solutions
-- ### (1st)
+- ### (1st) [[postprocess to match target distribution]], [[use intermediate layer results (weighted)]]
 	- https://www.kaggle.com/c/google-quest-challenge/discussion/129840
 		- solution code: https://github.com/oleg-yaroshevskiy/quest_qa_labeling
 		- [[use intermediate layer results (weighted)]]
@@ -50,7 +50,8 @@
 		- [[postprocess to match target distribution]]
 			- https://github.com/oleg-yaroshevskiy/quest_qa_labeling/blob/730a9632314e54584f69f909d5e2ef74d843e02c/step11_final/blending_n_postprocessing.py#L55
 				- code
-					def postprocess_single(target, ref):
+					```python
+						def postprocess_single(target, ref):
 					    """
 					    The idea here is to make the distribution of a particular predicted column
 					    to match the correspoding distribution of the corresponding column in the
@@ -75,6 +76,7 @@
 					        v += 1
 					
 					    return scores / scores.max()
+				  ```
 		-  some grandmasters are talking in the comments:
 		- they didn't use thresholding, instead they placed each prediction into buckets (to generate the final result? not sure)
 			- "But the threshold does a very similar thing. I actually tried both approaches on a very robust CV setup and fitting to distribution was always way worse for us. This was also confirmed when using rank-based approaches which inherenctly care more about the distribution."
@@ -118,6 +120,7 @@
 		- how did they figure out good clips?
 			- Sample 1000 times single question-answer pairs from multiple questions
 			- Generate thresholds that optimize the median score of all 1000 samples
+				- I think they are optimizing the median since they are using [[binary encoded categorical ordinal targets]]
 	- #### Training models
 		- used [[differential learning rate]]
 		- All “normal” tricks that worked in past computer vision or other NLP competitions (e.g. concat of Max and Mean pooling) did not improve cv. Also using a sliding window approach to capture more text did not work.
@@ -134,3 +137,6 @@
 				- target is in ""s cause: "(For the sake of simplicity we show the architecture for the original 30 targets. It was adapted to work with the binarized targets.)"
 
 ## Takeaways
+- use [[postprocess to match target distribution]]
+- If you have enough target columns, and one target is really unstable, just drop it from your CV
+- Always try [[binary encoded categorical ordinal targets]] for ranking problems

@@ -16,7 +16,7 @@ average of the sample weighted: [[log loss]]
 
 ## Important notebooks/discussions
 ## Solutions
-- ### (1st)
+- ### (1st) use [[image segmentation]] to help stage 2 models ([[stacking]])
 	- https://www.kaggle.com/competitions/rsna-2023-abdominal-trauma-detection/discussion/447449
 		- solution code:
 			- inference: https://www.kaggle.com/nischaydnk/rsna-super-mega-lb-ensemble
@@ -45,15 +45,16 @@ average of the sample weighted: [[log loss]]
 			- A.HorizontalFlip(p=0.5),
 			- A.VerticalFlip(p=0.5),
 			- A.Rotate(p=0.5, limit=(-25, 25)),
-- ### (2nd)
+- ### (2nd) [[image segmentation]] + [[GRU head (neck) after the backbone layer]]
 	- https://www.kaggle.com/competitions/rsna-2023-abdominal-trauma-detection/discussion/447453
 	- solution code:
 		- Inference: https://www.kaggle.com/code/theoviel/rsna-abdominal-inf
 		- training: https://github.com/TheoViel/kaggle_rsna_abdominal_trauma
 	- [[GRU head (neck) after the backbone layer]]
 		- "1. RNN only sees probabilities precomputed by the CNN, so training is done in 2 stages."
+	- used the provided sugmentation data
 	- didn't do anything to address the data imbalance. the models handled it well
-- ### (3rd)
+- ### (3rd) [[image segmentation]] + careful cropping
 	- https://www.kaggle.com/competitions/rsna-2023-abdominal-trauma-detection/discussion/447464
 		- Crop: Since information around the organs is essential for trauma detection, the mask was slightly enlarged before the boxes were cut out. Two patterns of mask sizes were employed and two datasets were created for each organ.
 		- The following are those that have made a particularly significant contribution to accuracy:  
@@ -63,5 +64,5 @@ average of the sample weighted: [[log loss]]
 			- 2types of crops
 ## Takeaways
 - It's hard to build an end-to-end model that predicts the target classes.
-	- so ppl built models to identify organs via image segmentation, then derive the target classes from that
+	- so ppl built models to identify organs via [[image segmentation]] (1st to 3rd did this), then derive the target classes from that
 	- tbh. large models + more data will prob eliminate this intermediate step

@@ -1,0 +1,2 @@
+- When you train another model using predictions from an earlier model
+	- You are stacking models ontop of each other!

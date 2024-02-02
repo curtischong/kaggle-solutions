@@ -116,6 +116,6 @@ A good solution uses both the fasta file (getting an LLM to make predictions bas
 			- 3) [[extract features using NLP on academic papers]]: used text information obtained by tf-idf of abstract information from academic papers associated with each protein
 		- from comments:
 			- concatenating ProtBERT sucked
-			- [[dimension reduction for feature generation]] However, when I reduced the dimensions of ProtBERT to 3dims using [[UMAP dimension reduction]]/tSNE and added it, the score improved
+			- [[dimension reduction for feature generation]]: However, when I reduced the dimensions of ProtBERT to 3dims using [[UMAP dimension reduction]]/tSNE and added it, the score improved
 #### Takeaways
 - Using language models (e.g. T5 or ProtBERT) to extract embeddings from the protein sequence is highly recommended

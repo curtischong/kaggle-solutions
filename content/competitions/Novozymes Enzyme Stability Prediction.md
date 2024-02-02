@@ -80,3 +80,4 @@
 		- are they comparing the mutation of the enzyme to the original enzyme, and using the original enzyme as a reference for the mutation, so that the tm value is just an offset of the tm of the original enzyme?
 		- I guess training an IGN outputs an embedding that represents the graph. now that they have an embedding, they can use it as a feature vector for downstream models
 ## Takeaways
+- TODO

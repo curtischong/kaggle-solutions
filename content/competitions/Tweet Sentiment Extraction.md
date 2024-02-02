@@ -62,9 +62,9 @@
 	- "I used the fastai style freeze-unfreeze scheme since the head is quite complicated."
 	- looking at their code:
 		- position_outputs[idx,:] = [start_idx + len(input_ids_0) + 2, end_idx + len(input_ids_0) + 2]
-- ### (4th)
+- ### (4th) [[alternative targets (auxiliary objective)]] to improve predicting the start and end tokens
 	- https://www.kaggle.com/competitions/tweet-sentiment-extraction/discussion/159499
-		- he also has 4 model heads:
+		- he also has 4 model heads [[alternative targets (auxiliary objective)]]:
 			- 1) QA dense head (just a linear layer without any dropout) for predicting start and end tokens
 				- for each token in the output, predict if it's the start token, or if it's the end token
 				- "Loss is computed with [[KLDivergenceLoss]] to add [[label smoothing]]":
@@ -72,7 +72,6 @@
 					- I think they're saying that kldivergence basically adds label smoothing
 			- 2) Linear layer to predict binary target for each token: if it should be in selected text or not.
 				- very similar to 1) but now, every token in the answer is given a probability of 1
-			- [[alternative targets (auxiliary objective)]]
 			- 3) linear layer to predict a sentiment of each token.
 			- 4) Two linear layers with ReLU in between to predict the sentiment of the whole tweet.
 		- #### Inference phase

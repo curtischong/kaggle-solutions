@@ -1,1 +1,1 @@
-- this is different from learning to rank (like in the search engine problem) since it isn't about relevance to a query
+- this is different from [[learning to rank]] (like in the search engine problem) since `ordering objects in list` isn't about relevance to a query
