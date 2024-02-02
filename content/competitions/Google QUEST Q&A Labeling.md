@@ -2,13 +2,15 @@
 
 **Problem Type:** [[learning to rank]]
 
-**Input:** each row contains a question, and the answer to it (on a Q&A site)
+**Input:** Each row contains a question, and the answer to it (on a Q&A site)
 - Note: multiple rows can come from the same question, we group by `question_body`
 	- but they are in different rows since there were more than one answer to the question
 
 **Output:** 
+- for each questionId, generate it's ordering (so we can sort and use column-wise [[Spearman's correlation Coefficient]] later)
+- Note: even though a question may have multiple answers, we don't care. we are just ordering each unique questionId.
 
-**Eval Metric:** [[Spearman's correlation Coefficient]]
+**Eval Metric:** column-wise [[Spearman's correlation Coefficient]]
 - The goal is to see **how well your model can rank** Q&A forum posts based on these target columns:
 	- question_well_written
 	- answer_helpful
@@ -21,18 +23,18 @@
 		- kaggle sorts your predictions (decreasing yhat)
 			- the yhat you predict is just used to sort all the test rows
 		- we now have an ordered array of [questionId, rank]
-			- the rank is just the index of that questionId in the array
-		- we now run spearman's correlation of this array AGAINST kaggle's rank of this array
+			- the rank is just used to sort all the questionIds
+		- we now run spearman's correlation of this array AGAINST kaggle's ordering of this array
 	- since there are 30 columns, kaggle does it 30 times^
 	- The final score is the average of all 30 of these spearman correlations
-- A common approach was to treat it as a binary classification problem, cause the better you can predict each row's score, the more accurate it's rank will be
+- A common approach was to treat it as a [[binary classification]] problem, cause the better you can predict each row's score, the more accurate it's rank will be
 - IMPORATANT NOTE:
 	- these target variables can have duplicate values (since they were evaluated against a rubric, not against each other)
 	- many of these targets only had 4 distinct values
 		- 0, 1/3, 2/3, 1
 	- so ppl in the competition talked about "thresholding" their predictions (and treating it as a classification problem, rather than a regression or even a ranking problem)
-	- why does making it discrete matter? doesn't spearman corr only care about rank?
-		- no. cause [[Spearman's correlation Coefficient]] REALLY CARES if two items have have same score vs if one is a bit higher than other
+	- why does making it discrete matter? doesn't [[Spearman's correlation Coefficient]] only care about rank?
+		- no. cause spearman correlation IS DIFFERENT if two items have have same score vs if one is a bit higher than other
 ## Summary
 - There were A LOT OF THE TOP KAGGLE GRANDMASTERS IN THIS COMPETITION.
 	- so the solutions are very high quality

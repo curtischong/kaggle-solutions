@@ -99,23 +99,23 @@ A good solution uses both the fasta file (getting an LLM to make predictions bas
 				- They need to make sure that the predicted probability is never higher than a probability for a parent
 					- perhaps they get this probability from the training set if it exists
 				- doing this check is important because their models don't take this into account (some aren't aware of the graph relationships)
-- ### (3rd)
+- ### (3rd) Used computationally hypothesized GO labels as features
 	- https://www.kaggle.com/competitions/cafa-5-protein-function-prediction/discussion/464437
 	- in addition to the ground truth GO labels, there are other GO labels that were computationally hypothesized (non experimental)
-		- since these aren't confirmed, he used them as additional training features, rather than as the target
+		- since these aren't confirmed, he used them as additional training features, rather than as [[alternative targets (auxiliary objective)]]
+		- This^^ is from: "The [evidence codes](https://geneontology.org/docs/guide-go-evidence-codes/) of UniProt GOA annotations"
 	- Since the test_x will be experimentally validated in the future, he treated the train/validation/private test split like it was time series data
 		- ![[Pasted image 20240118135554.png]]
 		- This feels weird, but I guess it doesn't matter, cause as long as the validation data is diff form your train it's good. but it's weird since you might not be validating your model properly (the metric may not be stable since it's a bit shifted from your train data)
 			- but I guess he had to do it this way, cause he knows that in the future, the test (private) data might be collected with more precision, so the drift is expected
-- ### (4th)
+- ### (4th) [[extract features using NLP on academic papers]]
 	- https://www.kaggle.com/competitions/cafa-5-protein-function-prediction/discussion/433732
 		- approach
 			- 1) Prot-T5, ESM2, and Ankh Protein Language Model (PLM) embeddings. We carried out no further modifications or finetuning on the output of PLMs, only conversion to float32 to save memory.
 			- 2) A single binary matrix representing species taxonomy for each protein.
-			- 3) used text information obtained by tf-idf of abstract information from academic papers associated with each protein
+			- 3) [[extract features using NLP on academic papers]]: used text information obtained by tf-idf of abstract information from academic papers associated with each protein
 		- from comments:
 			- concatenating ProtBERT sucked
 			- [[dimension reduction for feature generation]] However, when I reduced the dimensions of ProtBERT to 3dims using [[UMAP dimension reduction]]/tSNE and added it, the score improved
-		- 
 #### Takeaways
 - Using language models (e.g. T5 or ProtBERT) to extract embeddings from the protein sequence is highly recommended

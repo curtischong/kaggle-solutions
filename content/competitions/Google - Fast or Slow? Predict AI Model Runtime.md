@@ -2,9 +2,14 @@
 
 **Problem Type:** [[learning to rank]]
 
-**Input:** 
+**Input:** The structure of a neural network (the nodes and edges of the graph)
+- You get features for each node of the network 
+- You also get the model config
 
-**Output:** 
+**Output:**
+- The order of different model configs (i.e. you are predicting how fast each model runs, and ordering those model IDs)
+	- For the `tile:xla` collection, only the first 5 entries will be considered and the rest will be ignored.
+	- For the `layout:*` collections, all entries will be considered (you should output a permutation of the number of configurations!).
 
 **Eval Metric:** [[Kendall Tau correlation]] AND custom metric for the top-k predictions
 ## Summary

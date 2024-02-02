@@ -1,6 +1,6 @@
 **Link:** https://www.kaggle.com/competitions/open-problems-single-cell-perturbations
 
-**Problem Type:** 
+**Problem Type:** [[binary classification]]
 
 **Input:** cell types and small molecule names
 

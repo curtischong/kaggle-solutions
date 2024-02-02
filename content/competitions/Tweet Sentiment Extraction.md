@@ -2,8 +2,7 @@
 
 **Problem Type:** [[substring segmentation]]
 
-**Input:** 
-- a tweet
+**Input:** A tweet
 - each tweet is classified as either neutral, positive, or negative
 	- I assume a human labels the sentiment
 

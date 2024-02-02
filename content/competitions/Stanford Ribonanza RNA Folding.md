@@ -1,10 +1,16 @@
 **Link:** https://www.kaggle.com/c/stanford-ribonanza-rna-folding
 
-**Problem Type:** 
+**Problem Type:** [[binary classification]]
 
-**Input:** 
+**Input:** RNA sequences (strings)
+- you also have other features like
+	- `signal_to_noise` - (float) Signal/noise value for the profile, defined as mean(measurement value over probed positions)/mean( statistical error in measurement value over probed positions).
+	- `reactivity_error` columns
+	- etc.
 
-**Output:** the reactivity for reactivity_DMS_MaP and reactivity_2A3_MaP for _each_ sequence position `id`
+**Output:** the reactivity probability for `reactivity_DMS_MaP` and `reactivity_2A3_MaP` for _each_ sequence position `id`
+- https://www.kaggle.com/code/dschettler8845/sr-rna-reactivity-learn-eda-baseline#data_exploration
+	- i.e. If the sum of the lengths of all 1,343,824 sequences in the test set is 269,796,671, then you should make 2 × 269,796,670 = 539,593,340 predictions.
 
 **Eval Metric:** [[MAELoss]]
 ## Summary
@@ -31,6 +37,8 @@
 			- It can be useful in this problem, since in train set Lmax=206, and in test Lmax=457
 		
 				My guess was if I am to use sliding window attention, my generalization plots would become closer to the ones Shujun shared, but it was not the case, they are still "too sharp"
+- **Decent EDA:**
+	- https://www.kaggle.com/code/dschettler8845/sr-rna-reactivity-learn-eda-baseline#data_exploration
 - https://www.kaggle.com/code/ayushs9020/understanding-the-competition-standford-ribonaza
 ## Solutions
 - ### (1st) Transformer model with Dynamic positional encoding + CNN for BPPM features
@@ -54,7 +62,7 @@
 		- [[xpos positional encoding]]
 			- Unfortunately, xpos shows rather poor performance on long sequences so we abstained from using this model in the final submission.
 		- We have also tried shift augmentation and different sequence padding approaches. This didn’t improve our model performance as well.
-	- [[handling public data leakage]]
+	- [[remove test data leakage]]
 		- 13% of the public test sequences are identical to the ones present in the train dataset (by sequence)
 		- To avoid selecting a model that is memorizing more of these sequences, we zeroed out the predictions for these sequences 
 		- sometimes we sent non-zeroed out submissions in order to compare our performance to other participants.
@@ -73,7 +81,7 @@
 			- ![[Pasted image 20240127113437.png]]
 		- code
 			- https://github.com/hoyso48/Stanford---Ribonanza-RNA-Folding-2nd-place-solution/blob/main/src/models/model.py
-- ### (3rd) AlphaFold Style Twin Tower Architecture + [[Squeezeformer layer]]
+- ### (3rd) [[AlphaFold]] Style Twin Tower Architecture + [[Squeezeformer layer]]
 	- https://github.com/GosUxD/OpenChemFold
 	- recycling from alphafold2 wasn't useful
 	- this solution VERY inspired by alphafold. that architecture is v complicated and I didn't look into how it works rn :'(

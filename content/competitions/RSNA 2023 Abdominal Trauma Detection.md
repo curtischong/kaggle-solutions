@@ -1,6 +1,6 @@
 **Link:** https://www.kaggle.com/c/rsna-2023-abdominal-trauma-detection/overview
 
-**Problem Type:** 
+**Problem Type:** [[binary classification]]
 
 **Input:** 3D CT scans
 

@@ -102,7 +102,7 @@ Bengali dialects (especially those spoken by Muslim religious sermons) aren't tr
 	- post processing: the punctuation model (xlm-roberta-large)
 		- their punctuation model will look at the spaces in between words. and it'll decide to insert a punctuation in those spaces if needed
 		- As a tip for training, the CV score was better improved by setting the loss weight of "PAD" to 0.0.
-- (4th) similar solution to (3rd). not much new
+- ### (4th) similar solution to (3rd). not much new
 	- https://www.kaggle.com/competitions/bengaliai-speech/discussion/447995
 	- trained a spelling error correction model (but didn't work)
 ## Takeaways

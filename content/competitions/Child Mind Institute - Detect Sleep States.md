@@ -1,6 +1,6 @@
 **Link:** https://www.kaggle.com/c/child-mind-institute-detect-sleep-states
 
-**Problem Type:** 
+**Problem Type:** [[classification]] since we're classifying each segment of time to see if someone is awake or not
 
 **Input:** wrist accelerometer data
 
