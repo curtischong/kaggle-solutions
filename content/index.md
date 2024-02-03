@@ -44,11 +44,11 @@ Here are the notes to: [[All Competitions]]
 	- Make sure you read the comments section, because that is where ppl point out important techniques
 
 ### Finding worthwhile competitions to look at
-1. look at competitions with different input types
+1. look for competitions for problem types you haven't solved before
 2. look for competitions with a high leaderboard shake-up
 	- Shakeup occurs when most people have a poor [[cross validation]], but some people have amazing CV
 	    - you can learn how to create a GOOD CV faster by looking at these competitions
-    - you can also learn unconventional opinions that are against majority opinion
+    - You can also learn unconventional opinions that are against majority opinion
 	- [Here's a list of competitions with high shakeup](https://www.kaggle.com/code/jtrotman/meta-kaggle-competition-shake-up)
 
 - If you want to search for winning solutions using a specific technique, Google: `kaggle 2nd place solution cyclic learning rate`
