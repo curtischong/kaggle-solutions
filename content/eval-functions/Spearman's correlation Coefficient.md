@@ -14,9 +14,9 @@ link: https://www.kaggle.com/code/dschettler8845/novo-esp-eda-baseline
 		- btw this notebook has good code for it using diff libraries
 - The metric assesses how well the relationship between two variables can be described using a monotonic function
 	- makes sense, cause it's a correlation function
-- Similar to [[Pearson's Correlation Coefficient]], however it assesses monotonic relationships (whether linear or not)
+- Similar to [[Pearson's Correlation Coefficient]], however Spearman's assesses monotonic relationships (whether linear or not)
 - How to get a perfect score of +-1?
-	- there are no duplicate 
+	- there are no duplicates
 ### pros
 - use when you want to make a model that can properly order n objects
 	- you want the order of y_predicted to be in the same order as y_target
