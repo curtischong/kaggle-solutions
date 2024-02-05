@@ -1,7 +1,7 @@
 https://blmoistawinde.github.io/ml_equations_latex/#cross-entropy
 measures the performance of a classification model whose output is a probability value between 0 and 1.
 
-In binary classification (one target):
+In binary classification (one target) [[BCELoss]]:
 
 $$-{(y\log(p) + (1 - y)\log(1 - p))}$$
 
