@@ -3,6 +3,7 @@ link:
 range: 
 ### summary
 -  KLDivergence evaluates how one probability distribution aligns or diverges from a second, expected probability distribution.
+- This video explains it intuitively: https://www.youtube.com/watch?v=SxGYPqCgJWM
 - you can use it:
 	- as a model loss
 	- to determine feature drift from your training data and real data, but  [population stability index](https://arize.com/blog-course/population-stability-index-psi/) (PSI) is preferred (since it's symmetric)
@@ -16,7 +17,7 @@ L(y_pred, y_true) = y_true * (log y_true - log y_pred)
 
 - [Is label smoothing equivalent to adding a KL divergence term or a cross entropy term?](https://stats.stackexchange.com/questions/521006/is-label-smoothing-equivalent-to-adding-a-kl-divergence-term-or-a-cross-entropy)
 
--
+- KL divergence is not technically a measure of distance, since it's not symmetric ( Dlk(P||Q) != Dlk(Q||P) ).
 ### pros
 
 ### Cons
