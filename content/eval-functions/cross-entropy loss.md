@@ -3,7 +3,7 @@ measures the performance of a classification model whose output is a probability
 
 In binary classification (one target) [[BCELoss]]:
 
-$$-{(y\log(p) + (1 - y)\log(1 - p))}$$
+$$-{(y\log(\hat{y}) + (1 - y)\log(1 - \hat{y}))}$$
 
 
 In multiclass classification (multiple targets: M > 2):
