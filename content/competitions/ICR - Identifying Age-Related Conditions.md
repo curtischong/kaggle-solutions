@@ -170,7 +170,7 @@
 ## Takeaways
 - (1st)'s [[hardness to predict label]] prob made a big difference
 - Use a deep neural network. Always. Even if you have little data. If you have a good CV, it'll work.
-	- (1st) used https://arxiv.org/pdf/1912.09363.pdf
+	- (1st) was inspired by https://arxiv.org/pdf/1912.09363.pdf
 	- (2nd) found success with [[TabPFN]]
 - (1st) "feature engineering led to overfitting". This requires blindly believing in your CV. which is so painful to accept
 - Do brave things:
