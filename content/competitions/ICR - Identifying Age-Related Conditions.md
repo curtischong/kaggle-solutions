@@ -32,7 +32,7 @@
 	- people trusted their CV a bit too much, and didn't do [[remove easy examples]] (2nd)
 		- they spent too much time [[overfitting yourself]]
 - **What is reweighing?**
-	- maybe " the reweighting is done in a way such that the class predictions are more balanced overall across all test data rows"
+	- Not sure. Maybe it' " the reweighting is done in a way such that the class predictions are more balanced overall across all test data rows"
 - **Glossary:** `epsilon` is the date for each row in the (optional dataset) `greeks.csv`
 ## Important notebooks/discussions
 - Baseline notebook and EDA
@@ -84,7 +84,7 @@
 			- where $M_0$ is the size of our validation set
 		- kaggle master: "I think it would work well if the two classes were better separated overall. Sadly, I don't think it will be competitive for this dataset"
 ## Solutions
-- ### (1st) [[TabPFN]] plus CV + [[alternative targets (auxiliary objective)]] for "hard to predict"
+- ### (1st) CV + [[alternative targets (auxiliary objective)]] for "hard to predict"
 	- https://www.kaggle.com/competitions/icr-identify-age-related-conditions/discussion/430843
 	- solution code: https://storage.googleapis.com/kaggle-forum-message-attachments/2384935/19562/adv_model_training.ipynb
 	- The "greeks.csv" was useless. I think, because we have no greeks for the test data.
@@ -170,7 +170,8 @@
 ## Takeaways
 - (1st)'s [[hardness to predict label]] prob made a big difference
 - Use a deep neural network. Always. Even if you have little data. If you have a good CV, it'll work.
-	- (1st) and (2nd) found success with [[TabPFN]]
+	- (1st) used https://arxiv.org/pdf/1912.09363.pdf
+	- (2nd) found success with [[TabPFN]]
 - (1st) "feature engineering led to overfitting". This requires blindly believing in your CV. which is so painful to accept
 - Do brave things:
 	- (2nd) removed the rows that didn't have a date in the aux data
