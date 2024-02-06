@@ -31,3 +31,8 @@
 	- limitations:
 		- up to 1000 data points, 100 features, 10 classes
 	- this video isn't very good
+
+### Limitations
+- "We also focused the development of TabPFN to purely numerical datasets without missing values, and while they can be applied to datasets with categorical features and/or missing values, their performance is generally worse."
+- "we did not consider the existence of many uninformative features in our prior, leading to performance degradation when such features are added"
+- since TabPFN does training AND inference at the same time, inference is slower
