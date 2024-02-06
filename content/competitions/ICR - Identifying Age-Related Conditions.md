@@ -84,7 +84,7 @@
 			- where $M_0$ is the size of our validation set
 		- kaggle master: "I think it would work well if the two classes were better separated overall. Sadly, I don't think it will be competitive for this dataset"
 ## Solutions
-- ### (1st) CV + [[alternative targets (auxiliary objective)]] for "hard to predict"
+- ### (1st) [[Temporal Fusion Transformers (TFT)]] + workable CV + [[alternative targets (auxiliary objective)]] for "hard to predict". No Feature Engineering
 	- https://www.kaggle.com/competitions/icr-identify-age-related-conditions/discussion/430843
 	- solution code: https://storage.googleapis.com/kaggle-forum-message-attachments/2384935/19562/adv_model_training.ipynb
 	- The "greeks.csv" was useless. I think, because we have no greeks for the test data.
@@ -97,6 +97,14 @@
 			- they are only printing the lowest validation loss (not using? [[select 2 best models for each fold on CV]])?
 				- the weights are saved to their own h5 file. so maybe they're just picking the right one based on the score
 			- I can confirm that for each of the 10 train-validate splits, they are running them 10 times.
+	- their main model was [[Temporal Fusion Transformers (TFT)]]
+		- I guess since we have data for different years, a time-based model could be helpful here
+			- but this isn't a forecasting problem so I'm not sure how they are using TFT
+		- ok I understand the TFT model architecture now. Although the train_x he passed into TFT isn't time-based it's fine
+		- cause the model is pretty good at automatically "selecting which features to use" (via learned weights), regardless of time variables
+		- I looked at his code: He didn't use the [[LSTM]] that TFT used. He mainly just used the layers that did feature selection
+			- he didn't even use the attention layer at the end of TFT
+		- his model was just stacking 3 variable selection layers ontop of each other, and called it a day.
 	- What did work:
 		- DNN based on Variable Selection Network
 			- https://arxiv.org/abs/1912.09363
