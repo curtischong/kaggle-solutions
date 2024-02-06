@@ -1,4 +1,9 @@
 - https://arxiv.org/pdf/1908.07442.pdf
-	- 
-- https://www.youtube.com/watch?v=Am_zwQlf7Ks
-- 
+	- how it works:
+		- the idea is that if you know how. a table's features are distributed, then if you see missing data, you can infer the missing column
+		- this doesn't only apply to the target column, but to other input columns as well
+	- This model is a seq-to-seq model. The idea is to impute the missing data.
+		- the encoder will create a representation of the data
+		- the decoder will read this representation and guess the missing data
+	- how the feature transformer owrks
+		- 
