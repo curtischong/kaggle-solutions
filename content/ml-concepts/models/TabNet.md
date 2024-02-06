@@ -1,0 +1,4 @@
+- https://arxiv.org/pdf/1908.07442.pdf
+	- 
+- https://www.youtube.com/watch?v=Am_zwQlf7Ks
+- 

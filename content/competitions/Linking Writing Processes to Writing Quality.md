@@ -12,7 +12,7 @@
 - You can predict their score pretty well! with an RMSE of around 0.5
 ## Important notebooks/discussions
 ## Solutions
-- ### (1st) Lots of text cleaning. external data. large ensemble. trees + neural nets
+- ### (1st) Lots of text cleaning. external data. large ensemble. trees + neural nets [[TabNet]]
 	- https://www.kaggle.com/competitions/linking-writing-processes-to-writing-quality/discussion/466873
 	- ![[Pasted image 20240206153125.png]]
 	- cleaning:

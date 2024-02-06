@@ -1,0 +1,12 @@
+- One assumption is: "The public leaderboard should be similar to the private leaderboard"
+	- If the public leaderboard is very different from your train data, you have to make your train dataset look like the predicted test data
+		- see [[LANL Earthquake Prediction]] to understand how to do this
+- How to probe?
+	- https://www.kaggle.com/competitions/linking-writing-processes-to-writing-quality/discussion/456467
+	- You basically send a bunch of submissions where yhat is the same value for all rows:
+		- "if I submit yhat=1, what is my score?"
+		- "if I submit yhat=2, what is my score?"
+		- "if I submit yhat=3, what is my score?"
+	- this can tell you how the public LB is distributed.
+	- you do the same with your train dataset to see if the score is similar
+- **TLDR: Try your best to figure out what is the distribution of the test data. Make sure your training data has a distribution that matches the test data.** 
