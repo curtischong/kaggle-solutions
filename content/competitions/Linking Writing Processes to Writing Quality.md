@@ -12,6 +12,8 @@
 - You can predict their score pretty well! with an RMSE of around 0.5
 ## Important notebooks/discussions
 ## Solutions
+- ### (1st) [[TabPFN]]
+	- 
 - ### (3rd) Dieter's team.
 	- https://www.kaggle.com/competitions/linking-writing-processes-to-writing-quality/discussion/466906
 		- 8fold cross validation
