@@ -1,0 +1,1 @@
+https://ftfy.readthedocs.io/en/latest/#

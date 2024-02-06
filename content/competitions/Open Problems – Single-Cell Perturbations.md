@@ -103,7 +103,7 @@ Note: an estimated 35% of the training data is erroneous: https://www.kaggle.com
 		1. a replacing onehot encoding with an embedding layer
 		2. a replacing MAE loss with MRRMSE loss
 		3. an ensembling of models with mean
-		4. a dimension reduction with truncated [[singular value decomposition]]
+		4. a dimension reduction with truncated [[singular value decomposition (SVD)]]
 			- An example of this is here (not their kernel): https://www.kaggle.com/code/ambrosm/scp-quickstart?scriptVersionId=144293041&cellId=8
 			- "We denoise the targets by applying a singular value decomposition"
 			- here is the line of code they actually use fit transform: https://github.com/okon2000/single_cell_perturbations/blob/7e9513972d7cf8ab9c87021bd082712efefff9b9/util.py#L194-L195C6
@@ -153,7 +153,7 @@ Note: an estimated 35% of the training data is erroneous: https://www.kaggle.com
 	- feature engineering for neural net model
 		- only [[Leave-one-out encoding]] for cell_type and sm_name
 			- other features decreased CV
-		- also did [[singular value decomposition]] on the target variables
+		- also did [[singular value decomposition (SVD)]] on the target variables
 		- They tried converting the SMILES into an image using the rdkit.Chem library
 			- then training a non-pretrained resnet on it
 			- but this didn't help

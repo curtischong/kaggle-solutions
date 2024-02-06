@@ -12,8 +12,22 @@
 - You can predict their score pretty well! with an RMSE of around 0.5
 ## Important notebooks/discussions
 ## Solutions
-- ### (1st) [[TabPFN]]
-	- 
+- ### (1st) Lots of text cleaning. external data. large ensemble. trees + neural nets
+	- https://www.kaggle.com/competitions/linking-writing-processes-to-writing-quality/discussion/466873
+	- ![[Pasted image 20240206153125.png]]
+	- cleaning:
+		- [[ftfy]] to fix unicode errors
+		- Discard events ten minutes before first input.
+		- Correct up times and down times so that gap times and action times are not too large (ten minutes and five minutes, respectively).
+		- other data quality issues specific to this dataset
+	- essay reconstruction text cleaning:
+		- If cursor position and text change information do not match with reconstructed text, search sequence with nearest fuzzy match.
+		- Correct Undo (ctrl+Z) operation if cursor position and text change information do not match with reconstructed text
+	- light autoML
+	- they didn't use a transformer directly on the raw essay text
+		- used [[tf-idf]] features instead
+			- Once tf-idf features are extracted, I used truncated [[singular value decomposition (SVD)]] to reduce their dimensions to 64.
+	- They gathered a lot of external data
 - ### (3rd) Dieter's team.
 	- https://www.kaggle.com/competitions/linking-writing-processes-to-writing-quality/discussion/466906
 		- 8fold cross validation
@@ -59,3 +73,6 @@
 			- More squeezeformer layers
 
 ## Takeaways
+- External data was the key (1st, 2nd, and 4th used it)
+- always use a neural net
+	- ppl tried to generate features from the reconstructed essay text (e.g. avg word length), but these tabular features can't compare to a neural net
