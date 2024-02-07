@@ -11,6 +11,7 @@
 			- The signal at the top of the encoder is what goes into the decoder (to predict the missing data)
 			- the signal at the bottom (feature attributes) is used to tell us "how important feature x is"
 				- cause this signal is derived from the mask, which includes/excludes features based on its importance
+				- this signal isn't used to calculate loss. Only the top signal is
 		- You can think of each step of the encoder as a branch in the decision tree that splits features
 			- at every split, we generate a better representation of the data (which is summed in the top signal and goes to the output)
 			- and each time we split, we record which features are important by adding it to the bottom signal
