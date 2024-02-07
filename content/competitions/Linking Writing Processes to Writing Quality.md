@@ -54,11 +54,11 @@
 				- deberta-v3-large trained with q replaced by i (with first 12 layers frozen in finetuning, to avoid overfit) [[Freezing Layers]]
 				- deberta-v3-base trained with q replaced by X
 				- deberta-v3-base trained with custom spm tokenizer
-			- [[lasso feature importance for ensembling]] "we used positive Ridge Regression on Out-of-fold (OOF) predictions to determine blending weights."
+			- [[lasso feature importance for ensembling]] "we used positive [[Ridge Regression]] on Out-of-fold (OOF) predictions to determine blending weights."
 				- actually, they used lasso
 				- https://www.kaggle.com/competitions/linking-writing-processes-to-writing-quality/discussion/466906#2596622
-					-  They basically took yhat (that each deBerta outputted) as input features to a ridge regression that was trained to predict y
-						- ridge regression tells you feature importance:
+					-  They basically took yhat (that each deBerta outputted) as input features to a [[ridge regression]] that was trained to predict y
+						- [[ridge regression]] tells you feature importance:
 							- "Deberta1's predictions are 30% important"
 							- "Deberta2's predictions are 50% important"
 							- "Deberta3's predictions are 20% important"
