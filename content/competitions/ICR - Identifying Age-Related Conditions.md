@@ -105,6 +105,7 @@
 		- I looked at his code: He didn't use the [[LSTM]] that TFT used. He mainly just used the layers that did feature selection
 			- he didn't even use the attention layer at the end of TFT
 		- his model was just stacking 3 variable selection layers ontop of each other, and called it a day.
+		- used the [[Smish]] activation function
 	- What did work:
 		- DNN based on Variable Selection Network
 			- https://arxiv.org/abs/1912.09363

@@ -14,6 +14,7 @@
 ## Solutions
 - ### (1st) Lots of text cleaning. external data. large ensemble. trees + neural nets [[TabNet]]
 	- https://www.kaggle.com/competitions/linking-writing-processes-to-writing-quality/discussion/466873
+	- solution code: https://www.kaggle.com/code/tomooinubushi/1st-place-solution-training-and-inference-code?scriptVersionId=159806571
 	- ![[Pasted image 20240206153125.png]]
 	- cleaning:
 		- [[ftfy]] to fix unicode errors
@@ -28,6 +29,7 @@
 		- used [[tf-idf]] features instead
 			- Once tf-idf features are extracted, I used truncated [[singular value decomposition (SVD)]] to reduce their dimensions to 64.
 	- They gathered a lot of external data
+	- reading their solution, it seems like they tried [[TabPFN]], but didn't use it in their final submission
 - ### (3rd) Dieter's team.
 	- https://www.kaggle.com/competitions/linking-writing-processes-to-writing-quality/discussion/466906
 		- 8fold cross validation

@@ -34,3 +34,4 @@
 [[Gated Linear Units (GLU)]]
 [[Gaussian Error Linear Unit (GELU)]]
 [[SwiGLU]]
+[[Smish]]

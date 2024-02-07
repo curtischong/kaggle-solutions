@@ -1,3 +1,4 @@
+- github: https://github.com/dreamquark-ai/tabnet
 - https://arxiv.org/pdf/1908.07442.pdf
 	- how it works:
 		- the idea is that if you know how. a table's features are distributed, then if you see missing data, you can infer the missing column
@@ -6,4 +7,5 @@
 		- the encoder will create a representation of the data
 		- the decoder will read this representation and guess the missing data
 	- how the feature transformer owrks
-		- 
+"TabNet (Arik et al., 2019) proposes a sparse attention mechanism that is stacked in multiple layers to mimic the recursive splitting of decision trees"
+- https://arxiv.org/pdf/2311.11694.pdf
