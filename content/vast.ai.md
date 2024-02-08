@@ -1,0 +1,5 @@
+- really cheap training resources
+- research labs with GPUs idle will sell their GPUs to you
+- way cheaper than lambda or AWS
+- but it's not as reliable. if they want to take their instances offline, they will and you will lose all your progress
+	- so backup checkpoints

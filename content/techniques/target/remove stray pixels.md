@@ -1,0 +1,5 @@
+- a postprocessing trick for [[semantic segmentation]]
+- After your model makes a prediction. You can get a better [[DiceLoss]] by going through every predicted segment, and put each pixel into a disjoint set.
+	- if there are sets with a small pixel count, it means that there are clusters of pixels that have fooled the model and aren't *really* part of the target in the image.
+	- so just remove those small clusters
+- Note: be careful when adjusting the "minimum size of pixel clusters to keep". Be conservative. You don't want to remove a bunch of important pixels
