@@ -1,0 +1,1 @@
+- this helps with semantic segmentation if your training examples are mainly centered and never on the edge of the image

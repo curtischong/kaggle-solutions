@@ -1,0 +1,6 @@
+- This is like an image classification problem, but instead of classifying each image as a class, you classify each pixel as a class
+- this is typically done using a decoder/encoder network (like an autoencoder) where the image is shrunk down in dimension, then upscaled back into the same dimension (but the output is the pixel classes)
+- techniques to improve performance:
+	- [[downsample and upsample output]] 
+	- [[remove stray pixels]]
+	- [[ignore edge of output prediction]]

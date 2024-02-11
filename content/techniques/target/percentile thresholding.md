@@ -1,0 +1,8 @@
+- https://www.kaggle.com/competitions/birdclef-2021/discussion/243463
+	- This is a robust form of [[thresholding]]
+	- This means: "you set a certain percentile of predictions we want to do on a validation or test set, and calculated the according threshold that way."
+	- We did this by flattening all predictions, and then calculating the threshold: `threshold = np.percentile(y_preds.flatten(), 0.9987)`
+	- **TLDR: All predictions with a value above the x percentile is in class A, and everything else is in class B**
+		- so you are still tweaking a threshold, but the number you're tweaking is the percentile, not the actual value
+		- this makes sense, since different problem will have a different percentile, so this MUST be tweaked for each problem
+			- however, you are NOT tweaking thresholds for each individual model

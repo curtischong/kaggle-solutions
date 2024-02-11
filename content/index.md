@@ -32,6 +32,7 @@ Here are the notes to: [[All Competitions]]
 	- Their iteration times are much shorter than yours
 		- They have amazing software tools (weights and biases, optuna)
 	- They also have lots of computational resources
+- If the competition host has a public notebook / research paper, read it! You'll get ideas and may notice things they didn't see.
 
 ### How to review Kaggle problems efficiently
 1. Read the intro

@@ -1,0 +1,2 @@
+- in [[image segmentation]] problems, after your model outputs a prediction, try downsampling it (by 1/2 or 1/4) before upsampling it again.
+	- this could yield better results

@@ -32,7 +32,7 @@
 	- these target variables can have duplicate values (since they were evaluated against a rubric, not against each other)
 	- many of these targets only had 4 distinct values
 		- 0, 1/3, 2/3, 1
-	- so ppl in the competition talked about "thresholding" their predictions (and treating it as a classification problem, rather than a regression or even a ranking problem)
+	- so ppl in the competition talked about "[[thresholding]]" their predictions (and treating it as a classification problem, rather than a regression or even a ranking problem)
 	- why does making it discrete matter? doesn't [[Spearman's correlation Coefficient]] only care about rank?
 		- no. cause spearman correlation IS DIFFERENT if two items have have same score vs if one is a bit higher than other
 ## Summary
