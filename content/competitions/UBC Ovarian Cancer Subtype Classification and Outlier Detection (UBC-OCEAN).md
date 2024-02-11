@@ -140,7 +140,7 @@ https://www.kaggle.com/competitions/UBC-OCEAN/discussion/455890
 		- Later I excluded the data from the Harmanreh lab completely for validation which lead to much more reliable cross-validation scores. [[Identify poor data sources]]
 - ### (4th) Use the mask to identify cancerous areas, and train on a small and resized 768x768 pixels (very efficient)
 	- https://www.kaggle.com/competitions/UBC-OCEAN/discussion/465811
-	- TMA images are centre cropped (eg. 3000 -> 2500) and resized to 768x768 pixels.
+	- TMA images are centre cropped (eg. 3000 -> 2500) and resized to 768x768 pixels. [[reduce resolution]]
 	- Since the WSI images are larger, he used the thumbnail images to:
 		- 1) find cancerous locations (via an tumor mask detector he trained on the supplemental data)
 		- 2) The location of the pixel with highest probability of being cancerous is selected on the WSI and a region of 1536x1536 pixels around it is cropped and resized to 768x768 pixels, which is then used to predict scores.

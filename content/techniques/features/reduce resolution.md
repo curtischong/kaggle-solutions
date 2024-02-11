@@ -1,0 +1,2 @@
+- You reduce the resolution of the training data so your model doesn't have to process as much info
+	- this means you have more resources to train other parts of your model
