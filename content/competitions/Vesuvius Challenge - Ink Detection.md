@@ -31,6 +31,10 @@
 		- however, when we maxpool or downsample the height, it's not exactly 65, so it's called a group
 			- I think this because: "- The channel/group combinations used were 5x7 and 3x9. In other words, the middle 35 or 27 layers of the 65 layers are used."
 				- https://www.kaggle.com/competitions/vesuvius-challenge-ink-detection/discussion/417255
+	- **Temporal:** We are looking at static scroll fragments, so why is there a temporal dimension keep getting mentioned?
+		- I think it's cause we are looking at 3D data, so ppl name the extra dimension the "time" dimension, hence the temporal:
+			- https://www.kaggle.com/competitions/vesuvius-challenge-ink-detection/discussion/417779
+			- ![[Pasted image 20240212093806.png]]
 	## Solutions
 
 - ### (1st - youtube vid) [[Stochastic Weights Averaging]], [[remove easy examples]]
@@ -89,18 +93,24 @@
 			- [[channel shuffle]]
 			- [[pointwise convolution]]
 		- used [[percentile thresholding]]. (0.93 was best!)
+		- [[test time augmentation (tta)]]
+		    - h/v flip
+		    - Switch tta each time stride
 	- yukke42's part
 		- used Swin-Unet (in the decoder) to expand image patches to upscale low resolutions 3D images
 		- [[downsample and upsample output]]
 			- output resolution is downsampled to 1/2 or 1/4, then upsample with a [[bilinear interpolation]]
 		- [[label smoothing]]
 		- regularization:
-			- cutout: https://github.com/uoguelph-mlrg/Cutout
-			- cutmix: https://arxiv.org/abs/1905.04899
-			- mixup
+			- [[cutout]]: https://github.com/uoguelph-mlrg/Cutout
+			- [[cutmix]]: https://arxiv.org/abs/1905.04899
+			- [[mixup]]
 		- [[ignore edge of output prediction]]
-- ### (3rd) 
+- ### (3rd) Many U-nets with small resolution and Split up fragment 2 to have more training data, 
 	- https://www.kaggle.com/competitions/vesuvius-challenge-ink-detection/discussion/417536
+	- solution code:
+		- inference: https://www.kaggle.com/code/traptinblur/3rd-place-ensemble-576-8-384-6-224-8/notebook
+		- training: https://github.com/traptinblur/VCID_2023_3rd_place_code/tree/main
 	- only uses ir-CSN as the 3d encoder with a simple mean pooling bridging to 2d decoder
 	- #### Cross validation:
 		- originally used all 3 scroll fragments as 3 folds
@@ -126,8 +136,8 @@
 		-  after reading some solutions, we found that the channels of decoder is the most unconcerned part
 		- their decoder was inspired by https://github.com/selimsef/xview3_solution
 	- #### augmentation
-		- used mixup and cutmix
-			- We comment out cutout when use cutmix.
+		- used [[mixup]] and [[cutmix]]
+			- We comment out [[cutout]] when use [[cutmix]].
 		- Segmenting on normalized pixels works: https://www.kaggle.com/code/yoyobar/3d-resnet-baseline-inference [[normalize features]]
 		- We set the ShiftScaleRotate's rotate_limit to 180
 	- [[adamw optimizer]], [[onecycle scheduler]]
@@ -137,6 +147,13 @@
 			- I guess it's more accurate
 		- DIDN'T USE THRESHOLD SELECTION - just used 0.5
 		- no [[test time augmentation (tta)]]
+	- #### Tried but didn't work
+		- 2d models
+		- pure 3d models
+		- stacked unet which use 2d denoiser
+		- training a 3d denoiser
+		- classification branch for stronger supervision
+		- add maxpooling and conv layers between encoder and decoder
 
 ## Important notebooks/discussions
 - Understanding how ink is spread on the papyrus. Why fragment 2 is hard to predict for
@@ -147,3 +164,4 @@
 - Image segmentation uses a decoder + encoder
 	- spend more time on the encoder
 	- smaller decoders are good enough
+- ppl didn't find that much success with [[test time augmentation (tta)]]. If they did, it was either only 1 or 2 augmentations.

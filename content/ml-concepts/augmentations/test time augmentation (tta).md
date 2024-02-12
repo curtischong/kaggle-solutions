@@ -1,0 +1,3 @@
+- During inferencing, rather than passing in your example once into the model and getting the result, you pass in several augmented versions of it and average the final result
+- inferencing takes longer, but you'll get a more accurate prediction
+- This is often seen in [[image segmentation]] or [[Image Classification]] problems
