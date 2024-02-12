@@ -103,12 +103,17 @@
 	- https://www.kaggle.com/competitions/vesuvius-challenge-ink-detection/discussion/417536
 	- only uses ir-CSN as the 3d encoder with a simple mean pooling bridging to 2d decoder
 	- #### Cross validation:
-		- originally used all 3 scrolls as 3 folds
-			- but fold 2 sucked
-				- guessed that it's because fold 2 was different and they needed to train on it
+		- originally used all 3 scroll fragments as 3 folds
+			- but fold 2 scored the worse
+				- guessed that it's because the model didn't see enough of fold 2
 				- https://www.kaggle.com/competitions/vesuvius-challenge-ink-detection/discussion/401667
 			- so they split it into 3 individual folds (now they have 5 folds)
+			- this histogram explains why fragment 2 scores the worse: https://www.kaggle.com/competitions/vesuvius-challenge-ink-detection/discussion/403348#2235071
+		- 
 
 ## Important notebooks/discussions
+- Understanding how ink is spread on the papyrus. Why fragment 2 is hard to predict for
+	- https://www.kaggle.com/competitions/vesuvius-challenge-ink-detection/discussion/403348#2235071
+	- 
 
 ## Takeaways
