@@ -109,7 +109,34 @@
 				- https://www.kaggle.com/competitions/vesuvius-challenge-ink-detection/discussion/401667
 			- so they split it into 3 individual folds (now they have 5 folds)
 			- this histogram explains why fragment 2 scores the worse: https://www.kaggle.com/competitions/vesuvius-challenge-ink-detection/discussion/403348#2235071
-		- 
+	- #### Choosing the number of slices
+		- each fragment has 65 layers
+			- but using all 65 layers may be expensive. so they wanted to choose a good number of layers to use
+		- they experimented `8*i`slices where i=1, 2, 3, 4, 6. 24, 32 or 48
+			- these all worked well. They chose to use 24 slices
+	- #### Choosing the patch size
+		- used 224x224 (resulting in 13272 samples)
+			- larger patch sizes means that the model can read the entire character,
+			- but it'll have much fewer samples - leading to overfitting
+		- A 864x864 patch size easily overfit within 2 epochs
+		- The best single big resolution model is 576x576 patch size r152 type unet on fold 5, scoring 0.77 locally
+	- #### Models
+		- really loved https://www.kaggle.com/competitions/nfl-player-contact-detection/discussion/391635
+			- eventually used openmmlab's implementation + pretrianed weights (most likely their unet implementation)
+		-  after reading some solutions, we found that the channels of decoder is the most unconcerned part
+		- their decoder was inspired by https://github.com/selimsef/xview3_solution
+	- #### augmentation
+		- used mixup and cutmix
+			- We comment out cutout when use cutmix.
+		- Segmenting on normalized pixels works: https://www.kaggle.com/code/yoyobar/3d-resnet-baseline-inference [[normalize features]]
+		- We set the ShiftScaleRotate's rotate_limit to 180
+	- [[adamw optimizer]], [[onecycle scheduler]]
+	- skipped a few things
+	- #### inference
+		- used smaller cropping stride comparing to which we use in training.
+			- I guess it's more accurate
+		- DIDN'T USE THRESHOLD SELECTION - just used 0.5
+		- no [[test time augmentation (tta)]]
 
 ## Important notebooks/discussions
 - Understanding how ink is spread on the papyrus. Why fragment 2 is hard to predict for
@@ -117,3 +144,6 @@
 	- 
 
 ## Takeaways
+- Image segmentation uses a decoder + encoder
+	- spend more time on the encoder
+	- smaller decoders are good enough
