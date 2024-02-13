@@ -13,6 +13,7 @@
 | Oct 15, 2023 | [[RSNA 2023 Abdominal Trauma Detection]] |
 | Oct 11, 2023 | [[CommonLit - Evaluate Student Summaries]] |
 | Aug 10, 2023 | [[ICR - Identifying Age-Related Conditions]] |
+| Jun 14, 2023 | [[Vesuvius Challenge - Ink Detection]] |
 | Jan 3, 2023 | [[Novozymes Enzyme Stability Prediction]] |
 | May 3, 2022 | [[G-Research Crypto Forecasting]] |
 | Feb 10, 2022 | [[Google QUEST Q&A Labeling]] |

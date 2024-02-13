@@ -1,11 +1,20 @@
-- When you are predicting an ordinal target (especially when you're optimizing for [[ranking loss functions]] - e.g. [[jaccard similarity (aka Intersection Over Union)]]), this is a good way to represent it
+
+- **Problem:** You want your model to predict ordinal targets well
+	- e.g. you're optimizing for [[ranking loss functions]] (e.g. [[jaccard similarity (aka Intersection Over Union)]])
+- **solution:** rather than predicting if y is `[0, ⅓, ⅔, 1]`, your model predicts if  `y > 0, y > ⅓, y > ⅔`
+	- this is a better representation of the target
+- **Why?** I think it's cause it's easier for the network to learn these probabilities, than to predict if the target is `0, ⅓, ⅔, or 1`
+- Note: you need to do some postprocessing, so the final output is the model's probability that y is `0, ⅓, ⅔, or 1`
+	- the rest of this page explains the math of the postprocessing
+- **FAQ:**
+	- why not represent each ordinal class as [[one-hot encoding]]?
+		- cause you lose the ordering of values
 	- this technique works well if your ordinal target has duplicate values
-- why not represent each ordinal class as [[one-hot encoding]]?
-	- cause you lose the ordering of values
+--- 
 - The main idea:
-	- Let t be the true target's value
+	- Let `t` be the true target's value
 	- Assume your target t has unique values `[0, ⅓, ⅔, 1]`
-	- then we will generate 3 new target columns:
+	- then we will generate 3 new `target` columns:
 		- `t > 0, t > ⅓`, and `t > ⅔`
 		- we fill in each of these new binary columns based on what the original value of t was
 		- e.g. if the t = ⅔, then the value for that row in each column is:
@@ -20,7 +29,7 @@
 	- When the values are evenly spaced, as in this example, then the formula simplifies into:
 		- **t_hat = mean(P(t > 0), P(t > ⅓), P(t > ⅔))**
 ---
-- I'm not sure why it works 100%. but here is how we derived the case where "the values are evenly spaced"
+- here is how we derived the case where "the values are evenly spaced"
 	- P(t = 0) = 1 - P(t > 0)
 	- P(t = ⅓) = P(t > 0) - P(t > ⅓)
 	- P(t = ⅔) = P(t > ⅓) - P(t > ⅔)
