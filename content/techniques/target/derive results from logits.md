@@ -1,4 +1,4 @@
-- cause the logits are more raw than the sigmoided values
+[]()- cause the logits are more raw than the sigmoided values
 - **When to use logits over probabilities?**
 	- The impact of averaging logits over probabilities on ensembles of neural networks: https://ceur-ws.org/Vol-3215/19.pdf 
 		- "Due to averaging logits instead of averaging probabilities of stochastic or deterministic networks, the degree of confidence on TPs and FPs increased."
