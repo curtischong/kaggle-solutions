@@ -4,6 +4,9 @@ range:
 ### summary
 -  KLDivergence evaluates how one probability distribution aligns or diverges from a second, expected probability distribution.
 - This video explains it intuitively: https://www.youtube.com/watch?v=SxGYPqCgJWM
+	- if two distributions assign similar probabilities to the same sequence, then the distributions are similar
+		- and vice versa
+	- it's a natural measurement of distance between probability distributions motivated by looking at how likely the second distribution would be able to generate samples from the first distribution
 - you can use it:
 	- as a model loss
 	- to determine feature drift from your training data and real data, but  [population stability index](https://arize.com/blog-course/population-stability-index-psi/) (PSI) is preferred (since it's symmetric)
