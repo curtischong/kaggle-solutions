@@ -18,4 +18,5 @@ $$L = E_q[\log p(X,Z)] + H[Z]$$
 - Since we are dealing with logs multiplied by probabilities, it looks like [[KLDivergenceLoss]]
 	- so another way to express L is:
 		- $$L = \log p(X) - KL[q(Z) || p(Z|X)]$$
-- 
+- [Evidence Lower Bound (ELBO) - CLEARLY EXPLAINED! (youtube.com)](https://www.youtube.com/watch?v=IXsA5Rpp25w)
+	- 
