@@ -36,7 +36,7 @@ $$-{(y\log(\hat{y}) + (1 - y)\log(1 - \hat{y}))}$$
 			- $\frac{k}{n}\log(\hat{y}) + (1 - \frac{k}{n})\log(1 - \hat{y})$
 			- $y\log(\hat{y}) + (1 - y)\log(1 - \hat{y})$
 	- 3) Define the loss as the negative of the likelihood
-		- This is because minimizing the negative likelihood is performing [[Maximum Likelihood Estimation]]
+		- This is because minimizing the negative likelihood is performing [[Maximum Likelihood Estimation (MLE)]]
 			- cause the likelihood that the distribution fits the model is larger!
 [[categorical cross entropy]] In multiclass classification (multiple targets: M > 2):
 

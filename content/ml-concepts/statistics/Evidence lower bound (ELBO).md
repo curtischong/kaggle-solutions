@@ -19,4 +19,10 @@ $$L = E_q[\log p(X,Z)] + H[Z]$$
 	- so another way to express L is:
 		- $$L = \log p(X) - KL[q(Z) || p(Z|X)]$$
 - [Evidence Lower Bound (ELBO) - CLEARLY EXPLAINED! (youtube.com)](https://www.youtube.com/watch?v=IXsA5Rpp25w)
-	- 
+- https://blog.evjang.com/2016/08/variational-bayes.html
+	- Assume we have a hidden variable that dictates the observed variable
+	- ![[Pasted image 20240321171705.png]]
+	- e.g.
+		- X is the "raw pixel values of an image"
+		- Z = 1 means: "the img is a cat"
+
