@@ -1,4 +1,5 @@
 https://blmoistawinde.github.io/ml_equations_latex/#cross-entropy
+### Summary
 measures the performance of a classification model whose output is a probability value between 0 and 1.
 
 In binary classification (one target) [[BCELoss]]:

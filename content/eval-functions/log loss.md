@@ -1,8 +1,2 @@
-link: 
-range: 
-### summary
-
-![[Pasted image 20240127143047.png]]
-### pros
-
-### Cons
+aka logistic loss or [[cross-entropy loss]]
+[[log loss]] is NOT the same as [[log-likelihood]]
