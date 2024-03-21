@@ -1,0 +1,21 @@
+- TODO: tie all this together into a cohesive story.
+- AKA variational Lower Bound
+- It's the lower bound on the log-likelihood of some observed data
+- https://xyang35.github.io/2017/04/14/variational-lower-bound/
+		- The definition is:
+$$L = E_q[\log p(X,Z)] + H[Z]$$
+- Where
+	- Z is the hidden / latent variable
+	- X is the observed variable
+		- There is an unknown relationship about how the distribution of Z affects the distribution of X
+	- H is [[entropy]]
+- The derivation
+	- ![[Pasted image 20240321164319.png]]
+		- the first line comes from the law of total probability
+		- The last line is L (variational Lower Bound)
+- Why do we care about L?
+	- cause if we want our model's outputs (Z) to match the distribution of the training data(X), we want P(Z | X) to be very close to 1
+- Since we are dealing with logs multiplied by probabilities, it looks like [[KLDivergenceLoss]]
+	- so another way to express L is:
+		- $$L = \log p(X) - KL[q(Z) || p(Z|X)]$$
+- 
