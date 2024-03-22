@@ -8,21 +8,24 @@
 	- We care about P(Z|X) (the _posterior inference_):
 		- _Given this surveillance footage X, did the suspect show up in it?_
 		- _Given historical stock prices $X_{1:t}$, what will $X_{t+1}$ be?_
-	- We want to train models that match P(Z|X) as close as possible
-		- We could try to use sampling-based approaches like [MCMC](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo), but these are slow to converge.
-	- In variational inference, the goal is to approximate a complex posterior distribution p(z|x) over latent variables z given observed data x. This is often intractable to compute directly.
-	- Instead, a simpler variational distribution q(z) is introduced to approximate the true posterior distribution. The variational distribution is chosen from a family of distributions that are easier to work with, such as Gaussian distributions.
-	- The log-likelihood of the observed data can be decomposed into two terms: `log p(x) = L(q) + KL(q || p)` where `L(q)` is the variational lower bound and `KL(q || p)` is the [[KLDivergenceLoss]]
-	- The KL divergence is always non-negative, which means that L(q) is always less than or equal to the true log-likelihood log p(x). Hence, L(q) serves as a lower bound on the log-likelihood.
-	- The goal of variational inference is to maximize the variational lower bound L(q) with respect to the parameters of the variational distribution q(z). **By maximizing the lower bound, we indirectly minimize the KL divergence between q(z) and p(z|x)**
-		- so our model's distribution **q(Z)** is brought closer to **P(Z|X)** (and thus makes better predictions)
+	- Since P(Z|X) is too hard to know exactly, we train models $Q_\theta(Z|X)$ that matches P(Z|X) as close as possible
+		- We could try to use sampling-based approaches like [MCMC](https://en.wikipedia.org/wiki/Markov_chain_Monte_Carlo), but these are slow to converge..
+	- The log-likelihood of the observed data can be decomposed into two terms: `log P(X) = L(Q) + KL(Q || P)`
+		- P(X) is the probability distribution of X
+			- e.g. There are 10 dogs and 15 cats in the dataset
+		- `L(Q)` is the variational lower bound
+		- `KL(Q || P)` is the [[KLDivergenceLoss]]
+		- derivation: https://xyang35.github.io/2017/04/14/variational-lower-bound/
+	- The KL divergence is always non-negative, which means that L(Q) is always less than or equal to the true log-likelihood log P(X). Hence, L(Q) serves as a lower bound on the log-likelihood.
+	- The goal of variational inference is to maximize the variational lower bound L(Q) with respect to the parameters of the variational distribution Q(Z). **By maximizing the lower bound, we indirectly minimize the KL divergence between Q(Z) and P(Z|X)**
+		- so our model's distribution **Q(Z)** is brought closer to **P(Z|X)** (and thus makes better predictions)
 	- The term "variational" in "variational lower bound" comes from the fact that the approximation is based on variational calculus, which involves optimizing over a family of functions (in this case, the variational distributions).
-- since `log p(x) = L(q) + KL(q || p)`
+- since `log P(X) = L(Q) + KL(Q || P)`
 	- rearranging, we get:
-		`L(q) = log p(x) - KL(q || p)`
+		`L(Q) = log P(X) - KL(Q || P)`
 	- since maximizing L(q) makes the model better, we can also minimize -L(q) to make the model better
 	- Therefore, loss functions look like this:
-		`Loss_vb = KL(q || p) - log p(x)`
+		`Loss_vb = KL(Q || P) - log P(X)`
 ### Scratchpad
 - It's the lower bound on the log-likelihood of some observed data
 - https://xyang35.github.io/2017/04/14/variational-lower-bound/
