@@ -1,3 +1,38 @@
+[(138) Evidence Lower Bound (ELBO) - CLEARLY EXPLAINED! - YouTube](https://www.youtube.com/watch?v=IXsA5Rpp25w)
+- We want to make our model's predictions $q_\phi(z|x)$ match the ground truth $p_\theta(z|x)$
+- This means we want to minimize KL divergence between the our model's version of the distribution with the real distribution:
+	- ![[Pasted image 20240321204041.png]]
+	- To use this kl divergence as the loss to our model, we need to perform the calculation
+	- However, notice how the RHS includes the $p_{\theta(z|x)}$ term.
+		- This is the real distribution of the data and we don't know this!
+		- if we did, we wouldn't need to train the model!
+- So let's manipulate the KL divergence formula into a different form to see if we can minimize / maximize another objective within it to minimize the KL divergence.
+- after manipulating, we get this:
+- ![[Pasted image 20240321202404.png]]
+	- The Marginal log likelihood is the likelihood of the REAL distribution fitting the real data
+		- this term is fixed
+	- component 2 is the KL divergence from before. We can't compute it
+	- Notice **if we maximize component 1**, then we minimize the intractable KL divergence term (since the LHS is fixed)
+
+- ELBO is component 1:
+		$$-E_{q_\phi}[\log_{q_\phi}(z|x)] + E_{q_\phi}[\log_{p_\theta}(z,x)]$$
+- If we maximize, the ELBO, we indirectly minimize the KL divergence between our model and the real distribution
+	- so our model gets more accurate!
+- HOWEVER, this form of ELBO is too complicated. So let's simplify it:
+	- ![[Pasted image 20240321203851.png]]
+		- it's called the reconstruction error since we're reconstructing x from z
+	- by minimizing this, we can make our model more accurate
+- ## THE MOST IMPORTANT POINT
+	- **The KL divergence in the ELBO formula is different from the KL divergence from the start**
+		- this KL divergence is between our model and the REAL distribution of Z
+			- the first KL divergence (the intractable one) is the divergence between our model and the conditional distribution of Z
+		- in blogs, ppl will mention KL divergence, but since this KL divergence term looks very similar to the original one, it's easy to get confused
+			- people will also NOT point out that it's not the same
+- 
+### Scratchpad 2
+
+$D_{KL}(q_\phi || p_\theta) = E_{q_{\phi}}[\log \frac{q_\theta(z|x)}{p_\theta(z|x)}]$
+
 - https://blog.evjang.com/2016/08/variational-bayes.html
 	- Assume we have a hidden variable that dictates the observed variable
 	- ![[Pasted image 20240321171705.png]]

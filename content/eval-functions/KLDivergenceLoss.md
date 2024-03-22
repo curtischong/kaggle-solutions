@@ -21,6 +21,9 @@ L(y_pred, y_true) = y_true * (log y_true - log y_pred)
 - [Is label smoothing equivalent to adding a KL divergence term or a cross entropy term?](https://stats.stackexchange.com/questions/521006/is-label-smoothing-equivalent-to-adding-a-kl-divergence-term-or-a-cross-entropy)
 
 - KL divergence is not technically a measure of distance, since it's not symmetric ( Dlk(P||Q) != Dlk(Q||P) ).
+## TODO: cover reverse/forward KL divergence
+- Since it's not symmetric, the order in which you put the P and Q distribution matters
+- https://agustinus.kristia.de/techblog/2016/12/21/forward-reverse-kl/
 ### pros
 
 ### Cons
