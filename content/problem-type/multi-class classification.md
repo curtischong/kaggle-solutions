@@ -1,1 +1,2 @@
 - Goal: To classify an example as **one** of n classes
+- use a [[Softmax]] at the end of your model to classify x as **one** class

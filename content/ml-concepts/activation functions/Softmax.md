@@ -1,0 +1,12 @@
+- This is the activation function we apply after our activations to get the 
+- when to use:
+	- Binary classifcation problems -> use sigmoid activation
+	- [[multi-class classification]] -> use softmax
+	- [[Multi-label Classification]] -> use sigmoid for each target
+- Why use a softmax activation function? Why can't we just normalize by the sum of the absolute value of each logit value?
+	- e.g. $\text{output probability}_i = \frac{\text{logit}_i}{\sum_j{|\text{logit}_j|}}$
+	- The problem is that our loss functions are typically applied to the outputs of our neural networks.
+		- And these loss functions are typically logged (e.g. [[cross-entropy loss]] applies a log on the outer most layer)
+	- so by normalizing by softmax, which raises the logits to an exponent, if our output's error is large, the log in the loss function cancels out the exponent in the softmax, which means the gradient will **scale linearly** with the error of the output
+	- learn more: https://stackoverflow.com/questions/17187507/why-use-softmax-as-opposed-to-standard-normalization
+		- https://stats.stackexchange.com/questions/162988/why-sigmoid-function-instead-of-anything-else/318209#318209

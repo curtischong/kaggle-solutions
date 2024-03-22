@@ -1,2 +1,4 @@
-Each sample can belong to one or multiple classes at the same time.
-- don't confuse with [[multi-class classification]].
+- Each sample can belong to one or multiple classes at the same time.
+	- don't confuse with [[multi-class classification]].
+- Since each x can belong to more than one correct label, you want to apply a [[sigmoid]] to each individual class, rather than a [[Softmax]] over all classes
+	- sigmoid means: each label has a 0-1 probability of being chosen, but softmax will only allow one label to have a high probability of being chosen
