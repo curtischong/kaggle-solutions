@@ -3,6 +3,7 @@ link:
 range: 
 ### summary
 -  KLDivergence evaluates how one probability distribution aligns or diverges from a second, expected probability distribution.
+	- You mainly use it when the model's **output represents a probability distribution**
 - This video explains it intuitively: https://www.youtube.com/watch?v=SxGYPqCgJWM
 	- if two distributions assign similar probabilities to the same sequence, then the distributions are similar
 		- and vice versa
