@@ -11,5 +11,7 @@ range:
 	- since ln(a\*b) = ln(a) + ln(b), many equations simplify significantly
 	- so we use the log likelihood over the likelihood
 ### pros
+- Log likelihood can be used as a score to detect anomalies or outliers in the data.
+	- By calculating the log likelihood of each data point under a trained model, data points with significantly lower log likelihood values can be considered anomalous.
 
 ### Cons
