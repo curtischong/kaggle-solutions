@@ -1,0 +1,7 @@
+- warmup learning rates are when you have a low learning rate to start, then increase it to a higher learning rate (the red line)
+	- ![[Pasted image 20250301104041.png]]
+	- Note: you can also warmup your learning rate in an s-curve fashion
+- https://www.reddit.com/r/MachineLearning/comments/es9qv7/d_warmup_vs_initially_high_learning_rate/#:~:text=a
+	- why does startin off with a low learning rate when you're just training is bad?
+		- shouldn't larger learning rates be better since your model is so far away from optimum, you want to take bigger steps to get there?
+	- the answer is (hypothesized) to be because **"At the beginning of training, your later weights have huge high variance and so this makes training really hard"**
